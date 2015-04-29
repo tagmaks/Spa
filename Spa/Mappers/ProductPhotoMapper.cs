@@ -30,7 +30,7 @@ namespace Spa.Mappers
             this.Property(pp => pp.OriginName).HasMaxLength(50);
 
             this.Property(pp => pp.ModifiedDate).IsOptional();
-            this.Property(pp => pp.ModifiedDate).HasColumnType("smalldatetype");
+            this.Property(pp => pp.ModifiedDate).HasColumnType("smalldatetime");
 
             this.HasRequired(pp => pp.Product).WithMany().Map(p => p.MapKey("ProductId"));
         }

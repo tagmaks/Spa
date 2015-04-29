@@ -19,10 +19,10 @@ namespace Spa.Mappers
             this.Property(ol => ol.OfferListId).IsRequired();
 
             this.Property(ol => ol.StartDate).IsRequired();
-            this.Property(ol => ol.StartDate).HasColumnType("smalldatetype");
+            this.Property(ol => ol.StartDate).HasColumnType("smalldatetime");
 
             this.Property(ol => ol.EndDate).IsRequired();
-            this.Property(ol => ol.EndDate).HasColumnType("smalldatetype");
+            this.Property(ol => ol.EndDate).HasColumnType("smalldatetime");
         }
     }
 }

@@ -21,10 +21,10 @@ namespace Spa.Mappers
             this.Property(o => o.OrderDiscount).IsOptional();
 
             this.Property(o => o.OrderDate).IsOptional();
-            this.Property(o => o.OrderDate).HasColumnType("smalldatetype");
+            this.Property(o => o.OrderDate).HasColumnType("smalldatetime");
 
             this.Property(o => o.PaymentDate).IsOptional();
-            this.Property(o => o.PaymentDate).HasColumnType("smalldatetype");
+            this.Property(o => o.PaymentDate).HasColumnType("smalldatetime");
 
             this.Property(o => o.CustomerComment).IsOptional();
             this.Property(o => o.CustomerComment).HasMaxLength(255);

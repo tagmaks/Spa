@@ -19,7 +19,7 @@ namespace Spa.Mappers
             this.Property(c => c.CustomerId).IsRequired();
 
             this.Property(c => c.DateOfBirth).IsOptional();
-            this.Property(c => c.DateOfBirth).HasColumnType("smalldatetype");
+            this.Property(c => c.DateOfBirth).HasColumnType("smalldatetime");
 
             this.Property(c => c.SubscribedNews).IsOptional();
 

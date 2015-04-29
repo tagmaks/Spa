@@ -21,7 +21,7 @@ namespace Spa.Mappers
             this.Property(r => r.ProductRatio).IsRequired();
 
             this.Property(r => r.AddDate).IsOptional();
-            this.Property(r => r.AddDate).HasColumnType("smalldatetype");
+            this.Property(r => r.AddDate).HasColumnType("smalldatetime");
 
             this.HasRequired(r => r.Product).WithMany().Map(p => p.MapKey("ProductId"));
             this.HasRequired(r => r.Customer).WithMany().Map(p => p.MapKey("CustomerId"));
