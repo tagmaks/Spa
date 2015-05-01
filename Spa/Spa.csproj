@@ -111,8 +111,20 @@
     <Compile Include="Mappers\ProductPhotoMapper.cs" />
     <Compile Include="Mappers\ProductVideoMapper.cs" />
     <Compile Include="Mappers\RatioMapper.cs" />
+    <Compile Include="Migrations\201504292010428_Init.cs" />
+    <Compile Include="Migrations\201504292010428_Init.Designer.cs">
+      <DependentUpon>201504292010428_Init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201504292010428_Init.resx">
+      <DependentUpon>201504292010428_Init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
