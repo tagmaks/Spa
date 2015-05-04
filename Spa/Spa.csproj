@@ -99,6 +99,7 @@
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\RatioGrade.cs" />
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
+    <Compile Include="Infrastructure\ApplicationDbInitializer.cs" />
     <Compile Include="Infrastructure\ApplicationUser.cs" />
     <Compile Include="Infrastructure\ISpaRepository.cs" />
     <Compile Include="Infrastructure\SpaRepository.cs" />
@@ -113,11 +114,21 @@
     <Compile Include="Mappers\ProductPhotoMapper.cs" />
     <Compile Include="Mappers\ProductVideoMapper.cs" />
     <Compile Include="Mappers\RatioMapper.cs" />
+    <Compile Include="Migrations\201505040756444_Init.cs" />
+    <Compile Include="Migrations\201505040756444_Init.Designer.cs">
+      <DependentUpon>201505040756444_Init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\SpaDataSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201505040756444_Init.resx">
+      <DependentUpon>201505040756444_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -130,7 +141,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>23374</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

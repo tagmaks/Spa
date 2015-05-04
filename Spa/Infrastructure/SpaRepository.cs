@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Spa.Infrastructure
 {
-    public class SpaRepository : ISpaRepository
+    public class SpaRepository 
     {
         private ApplicationDbContext _ctx;
         public SpaRepository(ApplicationDbContext ctx)

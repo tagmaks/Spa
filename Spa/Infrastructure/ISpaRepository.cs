@@ -34,4 +34,4 @@ namespace Spa.Infrastructure
         Customer GetCustomer(int customerId);
         #endregion
     }
-}
+}   

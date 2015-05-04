@@ -15,10 +15,10 @@ using System.Linq;
         }
 
 #if DEBUG
-        //protected override void Seed(ApplicationDbContext)
-        //{
-            
-        //}
+        protected override void Seed(ApplicationDbContext context)
+        {
+            new SpaDataSeeder(context).Seed();
+        }
 #endif
     }
 }

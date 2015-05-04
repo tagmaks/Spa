@@ -19,7 +19,8 @@ namespace Spa.Infrastructure
 
             //this.Database.Connection.ConnectionString = "Data Source=.;Initial Catalog=Spa";
             //Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Spa.Migrations.Configuration>());
+            //Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Spa.Migrations.Configuration>());
         }
 
         public static ApplicationDbContext Create()
