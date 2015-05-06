@@ -60,7 +60,7 @@ namespace Spa.Infrastructure
                 foreach (var customerName in customerNames)
                 {
                     var nameGenderMail = SplitValue(customerName);
-                    var user = new ApplicationUser()
+                    var customer = new Customer()
                     {
                         FirstName = String.Format("{0}", nameGenderMail[0]),
                         LastName = String.Format("{1}", nameGenderMail[1]),
@@ -69,14 +69,14 @@ namespace Spa.Infrastructure
                         PasswordHash = RandomString(8),
                         Email = String.Format("{0}.{1}@{2}", nameGenderMail[0], nameGenderMail[1], nameGenderMail[3]),
                     };
-                    context.Users.Add(user);
+                    context.Users.Add(customer);
 
-                    var customer = new Customer()
-                    {
-                        SubscribedNews = true,
-                        CustomerGroup = group,
-                        ApplicationUser = user
-                    };
+                    //var customer = new Customer()
+                    //{
+                    //    SubscribedNews = true,
+                    //    CustomerGroup = group,
+                    //    ApplicationUser = user
+                    //};
                 }
 
                 context.SaveChanges();

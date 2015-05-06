@@ -7,13 +7,13 @@ namespace Spa.Entities
 {
     public class Order
     {
-        public Order()
-        {
-            //ShippingMethod = new ShippingMethod();
-            //PaymentMethod = new PaymentMethod();
-            OrderItems = new List<OrderItem>();
-            Customer = new Customer();
-        }
+        //public Order()
+        //{
+        //    //ShippingMethod = new ShippingMethod();
+        //    //PaymentMethod = new PaymentMethod();
+        //    OrderItems = new List<OrderItem>();
+        //    Customer = new Customer();
+        //}
         public int OrderId { get; set; }
         public int OrderDiscount { get; set; }
         public DateTime OrderDate { get; set; }

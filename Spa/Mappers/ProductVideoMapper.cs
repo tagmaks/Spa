@@ -24,7 +24,7 @@ namespace Spa.Mappers
             this.Property(pv => pv.Description).IsRequired();
             this.Property(pv => pv.Description).HasMaxLength(50);
 
-            this.HasRequired(pv => pv.Product).WithMany().Map(p => p.MapKey("ProductId"));
+            this.HasRequired(pv => pv.Product).WithMany(p => p.ProductVideos).Map(p => p.MapKey("ProductId"));
         }
     }
 }

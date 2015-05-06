@@ -7,11 +7,11 @@ namespace Spa.Entities
 {
     public class Ratio
     {
-        public Ratio()
-        {
-            Product = new Product();
-            Customer = new Customer();
-        }
+        //public Ratio()
+        //{
+        //    Product = new Product();
+        //    Customer = new Customer();
+        //}
         public int RatioId { get; set; }
         public Enums.RatioGrade ProductRatio { get; set; }
         public DateTime AddDate { get; set; }

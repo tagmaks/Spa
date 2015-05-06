@@ -7,14 +7,14 @@ namespace Spa.Entities
 {
     public class Product
     {
-        public Product()
-        {
-            Offers = new List<Offer>();
-            ProductPhotos = new List<ProductPhoto>();
-            ProductVideos = new List<ProductVideo>();
-            Ratios = new List<Ratio>();
-            Categories = new List<Category>();
-        }
+        //public Product()
+        //{
+        //    Offers = new List<Offer>();
+        //    ProductPhotos = new List<ProductPhoto>();
+        //    ProductVideos = new List<ProductVideo>();
+        //    Ratios = new List<Ratio>();
+        //    Categories = new List<Category>();
+        //}
         public int ProductId { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
@@ -37,5 +37,6 @@ namespace Spa.Entities
         public ICollection<ProductVideo> ProductVideos { get; set; }
         public ICollection<Ratio> Ratios { get; set; }
         public ICollection<Category> Categories { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

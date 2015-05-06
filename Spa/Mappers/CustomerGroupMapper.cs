@@ -23,7 +23,7 @@ namespace Spa.Mappers
 
             this.Property(cg => cg.Discount).IsOptional();
 
-            this.HasOptional(cg => cg.CustomerGroupOfferList).WithMany().Map(of => of.MapKey("OfferListId"));
+            this.HasOptional(cg => cg.OfferList).WithMany(of => of.CustomerGroups).Map(of => of.MapKey("OfferListId"));
         }
     }
 }

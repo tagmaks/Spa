@@ -42,18 +42,18 @@ namespace Spa.Infrastructure
         //    return products;
         //}
 
-        public IQueryable<dynamic> GetDetailedOrder(int orderId)
-        {
-            var detailedOrder = from c in _ctx.Customers
-                                join o in _ctx.Orders on c.CustomerId equals o.Customer.CustomerId
-                                join oi in _ctx.OrderItems on o.OrderId equals oi.Order.OrderId
-                                join p in _ctx.Products on oi.Product.ProductId equals p.ProductId
-                                where o.OrderId == orderId
-                                select new
-                                {
-                                    CustomerId = c.CustomerId
-                                };
-            return detailedOrder;
-        }
+        //public IQueryable<dynamic> GetDetailedOrder(int orderId)
+        //{
+        //    var detailedOrder = from c in _ctx.Customers
+        //                        join o in _ctx.Orders on c.Id equals o.Customer.Id
+        //                        join oi in _ctx.OrderItems on o.OrderId equals oi.Order.OrderId
+        //                        join p in _ctx.Products on oi.Product.ProductId equals p.ProductId
+        //                        where o.OrderId == orderId
+        //                        select new
+        //                        {
+        //                            CustomerId = c.Id
+        //                        };
+        //    return detailedOrder;
+        //}
     }
 }

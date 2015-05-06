@@ -20,8 +20,8 @@ namespace Spa.Mappers
 
             this.Property(oi => oi.Amount).IsRequired();
 
-            this.HasRequired(oi => oi.Order).WithMany().Map(o => o.MapKey("OrderId"));
-            this.HasRequired(oi => oi.Product).WithMany().Map(o => o.MapKey("ProductId"));
+            this.HasRequired(oi => oi.Order).WithMany(o => o.OrderItems).Map(o => o.MapKey("OrderId"));
+            this.HasRequired(oi => oi.Product).WithMany(p => p.OrderItems).Map(o => o.MapKey("ProductId"));
         }
     }
 }

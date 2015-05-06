@@ -7,11 +7,11 @@ namespace Spa.Entities
 {
     public class OfferList
     {
-        public OfferList()
-        {
-            CustomerGroups = new List<CustomerGroup>();
-            Offers = new List<Offer>();
-        }
+        //public OfferList()
+        //{
+        //    CustomerGroups = new List<CustomerGroup>();
+        //    Offers = new List<Offer>();
+        //}
         public int OfferListId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

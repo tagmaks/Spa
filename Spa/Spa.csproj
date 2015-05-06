@@ -114,9 +114,9 @@
     <Compile Include="Mappers\ProductPhotoMapper.cs" />
     <Compile Include="Mappers\ProductVideoMapper.cs" />
     <Compile Include="Mappers\RatioMapper.cs" />
-    <Compile Include="Migrations\201505040756444_Init.cs" />
-    <Compile Include="Migrations\201505040756444_Init.Designer.cs">
-      <DependentUpon>201505040756444_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201505052023524_Init.cs" />
+    <Compile Include="Migrations\201505052023524_Init.Designer.cs">
+      <DependentUpon>201505052023524_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SpaDataSeeder.cs" />
@@ -126,8 +126,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505040756444_Init.resx">
-      <DependentUpon>201505040756444_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505052023524_Init.resx">
+      <DependentUpon>201505052023524_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

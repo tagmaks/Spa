@@ -24,8 +24,8 @@ namespace Spa.Mappers
 
             this.Property(o => o.ShipPrice).IsRequired();
 
-            this.HasRequired(o => o.Product).WithMany().Map(p => p.MapKey("ProductId"));
-            this.HasRequired(o => o.OfferList).WithMany().Map(p => p.MapKey("OfferListId"));
+            this.HasRequired(o => o.Product).WithMany(p => p.Offers).Map(p => p.MapKey("ProductId"));
+            this.HasRequired(o => o.OfferList).WithMany(ol => ol.Offers).Map(ol => ol.MapKey("OfferListId"));
         }
     }
 }

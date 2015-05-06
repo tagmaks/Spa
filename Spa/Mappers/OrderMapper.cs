@@ -34,7 +34,7 @@ namespace Spa.Mappers
 
             this.Property(o => o.ShippingCost).IsRequired();
 
-            this.HasRequired(o => o.Customer).WithMany().Map(c => c.MapKey("CustomerId"));
+            this.HasRequired(o => o.Customer).WithMany(c => c.Orders).Map(c => c.MapKey("CustomerId"));
         }
     }
 }

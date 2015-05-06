@@ -19,6 +19,7 @@ namespace Spa.Infrastructure
 
             //this.Database.Connection.ConnectionString = "Data Source=.;Initial Catalog=Spa";
             //Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
             //Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Spa.Migrations.Configuration>());
         }
@@ -56,6 +57,4 @@ namespace Spa.Infrastructure
             base.OnModelCreating(modelBuilder);
         }
     }
-    
-
 }

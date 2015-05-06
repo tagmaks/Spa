@@ -7,10 +7,10 @@ namespace Spa.Entities
 {
     public class Category
     {
-        public Category()
-        {
-            Products = new List<Product>();
-        }
+        //public Category()
+        //{
+        //    Products = new List<Product>();
+        //}
         public int CategoryId { get; set; }
         public string Name { get; set; }
         //public string ParentCategory { get; set; }

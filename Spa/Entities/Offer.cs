@@ -7,11 +7,11 @@ namespace Spa.Entities
 {
     public class Offer
     {
-        public Offer()
-        {
-            Product = new Product();
-            OfferList = new OfferList();
-        }
+        //public Offer()
+        //{
+        //    Product = new Product();
+        //    OfferList = new OfferList();
+        //}
         public int OfferId { get; set; }
         public int Amount { get; set; }
         public int Price { get; set; }

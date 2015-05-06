@@ -23,8 +23,8 @@ namespace Spa.Mappers
             this.Property(r => r.AddDate).IsOptional();
             this.Property(r => r.AddDate).HasColumnType("smalldatetime");
 
-            this.HasRequired(r => r.Product).WithMany().Map(p => p.MapKey("ProductId"));
-            this.HasRequired(r => r.Customer).WithMany().Map(p => p.MapKey("CustomerId"));
+            this.HasRequired(r => r.Product).WithMany(p => p.Ratios).Map(p => p.MapKey("ProductId"));
+            this.HasRequired(r => r.Customer).WithMany(c => c.Ratios).Map(p => p.MapKey("CustomerId"));
         }
     }
 }

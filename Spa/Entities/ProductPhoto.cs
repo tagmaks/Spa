@@ -7,10 +7,10 @@ namespace Spa.Entities
 {
     public class ProductPhoto
     {
-        public ProductPhoto()
-        {
-            Product = new Product();
-        }
+        //public ProductPhoto()
+        //{
+        //    Product = new Product();
+        //}
         public int ProductPhotoId { get; set; }
         public string PhotoName { get; set; }
         public string Description { get; set; }
