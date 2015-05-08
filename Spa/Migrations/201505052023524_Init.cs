@@ -1,4 +1,4 @@
-namespace Spa.Migrations
+namespace Spa.Infrastructure
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -107,7 +107,7 @@ namespace Spa.Migrations
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
-                        DateOfBirth = c.DateTime(),
+                        DateOfBirth = c.DateTime(storeType: "smalldatetime"),
                         SubscribedNews = c.Boolean(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                         CustomerGroupId = c.Int(),

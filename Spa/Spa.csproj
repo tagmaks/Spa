@@ -99,10 +99,11 @@
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\RatioGrade.cs" />
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
-    <Compile Include="Infrastructure\ApplicationDbInitializer.cs" />
+    <Compile Include="Infrastructure\SpaDropCreateDatabaseAlways.cs" />
     <Compile Include="Infrastructure\ApplicationUser.cs" />
     <Compile Include="Infrastructure\ISpaRepository.cs" />
     <Compile Include="Infrastructure\SpaRepository.cs" />
+    <Compile Include="Mappers\ApplicationUserMapper.cs" />
     <Compile Include="Mappers\CategoryMapper.cs" />
     <Compile Include="Mappers\CustomerGroupMapper.cs" />
     <Compile Include="Mappers\CustomerMapper.cs" />
@@ -119,11 +120,12 @@
       <DependentUpon>201505052023524_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\SpaDataSeeder.cs" />
+    <Compile Include="Infrastructure\SpaDataSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201505052023524_Init.resx">

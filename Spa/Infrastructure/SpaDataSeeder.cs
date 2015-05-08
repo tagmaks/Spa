@@ -1,14 +1,20 @@
 ﻿using Spa.Entities;
+using Spa.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
 namespace Spa.Infrastructure
 {
-    public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class SpaDataSeeder
     {
+        ApplicationDbContext _ctx;
+        public SpaDataSeeder(ApplicationDbContext ctx)
+        {
+            _ctx = ctx;
+        }
+
         static string[] customerNames = 
         { 
             "Taiseer,Joudeh,Male,hotmail.com", 
@@ -46,7 +52,7 @@ namespace Spa.Infrastructure
             }
             return new string(buffer);
         }
-        protected override void Seed(ApplicationDbContext context)
+        public void Seed()
         {
             try
             {
@@ -55,7 +61,7 @@ namespace Spa.Infrastructure
                     GroupName = "Default",
                     Discount = 0
                 };
-                context.CustomerGroups.Add(group);
+                _ctx.CustomerGroups.Add(group);
 
                 foreach (var customerName in customerNames)
                 {
@@ -63,24 +69,19 @@ namespace Spa.Infrastructure
                     var customer = new Customer()
                     {
                         FirstName = String.Format("{0}", nameGenderMail[0]),
-                        LastName = String.Format("{1}", nameGenderMail[1]),
+                        LastName = String.Format("{0}", nameGenderMail[1]),
                         RegistrationDate = DateTime.Now,
+                        DateOfBirth = DateTime.Now,
                         UserName = String.Format("{0}{1}", nameGenderMail[0], nameGenderMail[1]),
                         PasswordHash = RandomString(8),
                         Email = String.Format("{0}.{1}@{2}", nameGenderMail[0], nameGenderMail[1], nameGenderMail[3]),
+                        SubscribedNews = true,
+                        CustomerGroup = group,
+                        
                     };
-                    context.Users.Add(customer);
-
-                    //var customer = new Customer()
-                    //{
-                    //    SubscribedNews = true,
-                    //    CustomerGroup = group,
-                    //    ApplicationUser = user
-                    //};
+                    _ctx.Customers.Add(customer);
                 }
-
-                context.SaveChanges();
-
+                _ctx.SaveChanges();
             }
             catch (Exception ex)
             {

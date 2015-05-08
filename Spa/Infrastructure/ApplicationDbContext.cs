@@ -17,17 +17,15 @@ namespace Spa.Infrastructure
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
 
-            //this.Database.Connection.ConnectionString = "Data Source=.;Initial Catalog=Spa";
             //Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
-            //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
-            //Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Spa.Migrations.Configuration>());
+            Database.SetInitializer<ApplicationDbContext>(new SpaDropCreateDatabaseAlways());
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerGroup> CustomerGroups { get; set; }
@@ -42,6 +40,7 @@ namespace Spa.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Configurations.Add(new ApplicationUserMapper());
             modelBuilder.Configurations.Add(new CategoryMapper());
             modelBuilder.Configurations.Add(new CustomerMapper());
             modelBuilder.Configurations.Add(new CustomerGroupMapper());

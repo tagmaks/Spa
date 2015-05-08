@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
-namespace Spa.Migrations
+namespace Spa.Infrastructure
 {
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
