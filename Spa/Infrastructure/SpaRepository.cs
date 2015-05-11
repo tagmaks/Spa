@@ -1,42 +1,53 @@
-﻿using Spa.Entities;
+﻿using Spa.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
-namespace Spa.Infrastructure
+namespace Spa.Data.Infrastructure
 {
     public class SpaRepository 
     {
-        private ApplicationDbContext _ctx;
-        public SpaRepository(ApplicationDbContext ctx)
+        private ApplicationDbContext _db;
+        public SpaRepository(ApplicationDbContext db)
         {
-            _ctx = ctx;
+            _db = db;
         }
 
-        public bool Insert(Product product)
+        public IQueryable<Customer> GetAllCustomers()
         {
-            try
-            {
-                _ctx.Products.Add(product);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return _db.Customers;
         }
 
-        public IQueryable<Product> GetAllProducts()
+        public async Task<Customer> GetCustomer(string id)
         {
-            return _ctx.Products.AsQueryable();
+            return await _db.Customers.FindAsync(id);
         }
+
+        //public bool Insert(Product product)
+        //{
+        //    try
+        //    {
+        //        _db.Products.Add(product);
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        //public IQueryable<Product> GetAllProducts()
+        //{
+        //    return _db.Products.AsQueryable();
+        //}
 
         //public IQueryable<Product> GetProductsByOrder(int orderId)
         //{
-        //    var products = from p in _ctx.Products
-        //                   join oi in _ctx.OrderItems on p.ProductId equals oi.Product.ProductId
-        //                   join o in _ctx.Orders on oi.Order.OrderId equals o.OrderId
+        //    var products = from p in _db.Products
+        //                   join oi in _db.OrderItems on p.ProductId equals oi.Product.ProductId
+        //                   join o in _db.Orders on oi.Order.OrderId equals o.OrderId
         //                   where o.OrderId == orderId
         //                   select p;
         //    return products;
@@ -44,10 +55,10 @@ namespace Spa.Infrastructure
 
         //public IQueryable<dynamic> GetDetailedOrder(int orderId)
         //{
-        //    var detailedOrder = from c in _ctx.Customers
-        //                        join o in _ctx.Orders on c.Id equals o.Customer.Id
-        //                        join oi in _ctx.OrderItems on o.OrderId equals oi.Order.OrderId
-        //                        join p in _ctx.Products on oi.Product.ProductId equals p.ProductId
+        //    var detailedOrder = from c in _db.Customers
+        //                        join o in _db.Orders on c.Id equals o.Customer.Id
+        //                        join oi in _db.OrderItems on o.OrderId equals oi.Order.OrderId
+        //                        join p in _db.Products on oi.Product.ProductId equals p.ProductId
         //                        where o.OrderId == orderId
         //                        select new
         //                        {

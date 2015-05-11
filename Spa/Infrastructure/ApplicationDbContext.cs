@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using Spa.Entities;
-using Spa.Mappers;
+using Spa.Data.Entities;
+using Spa.Data.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace Spa.Infrastructure
+namespace Spa.Data.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext()
-            : base("ApplicationConnection")
+            : base("name=ApplicationConnection")
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
@@ -25,7 +25,7 @@ namespace Spa.Infrastructure
         {
             return new ApplicationDbContext();
         }
-        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        //public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerGroup> CustomerGroups { get; set; }
@@ -40,7 +40,7 @@ namespace Spa.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new ApplicationUserMapper());
+            modelBuilder.Configurations.Add(new AppUserMapper());
             modelBuilder.Configurations.Add(new CategoryMapper());
             modelBuilder.Configurations.Add(new CustomerMapper());
             modelBuilder.Configurations.Add(new CustomerGroupMapper());

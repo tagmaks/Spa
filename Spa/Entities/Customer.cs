@@ -1,10 +1,10 @@
-﻿using Spa.Infrastructure;
+﻿using Spa.Data.Infrastructure;
 using System;
 using System.Collections.Generic;
 
-namespace Spa.Entities
+namespace Spa.Data.Entities
 {
-    public class Customer: ApplicationUser
+    public class Customer: AppUser
     {
         //public Customer()
         //{

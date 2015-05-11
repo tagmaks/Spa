@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Spa.Entities
+namespace Spa.Data.Entities
 {
     public class CustomerGroup
     {

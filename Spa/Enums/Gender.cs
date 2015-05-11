@@ -1,4 +1,4 @@
-﻿namespace Spa.Enums
+﻿namespace Spa.Data.Enums
 {
     public enum Gender
     {

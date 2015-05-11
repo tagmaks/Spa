@@ -1,4 +1,4 @@
-﻿using Spa.Entities;
+﻿using Spa.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,13 +6,13 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Web;
 
-namespace Spa.Mappers
+namespace Spa.Data.Mappers
 {
-    public class ProductMapper: EntityTypeConfiguration<Product>
+    public class ProductMapper : EntityTypeConfiguration<Product>
     {
         public ProductMapper()
         {
-            this.ToTable("Products");
+            this.ToTable("Products", "catalog");
 
             this.HasKey(p => p.ProductId);
             this.Property(p => p.ProductId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -53,7 +53,7 @@ namespace Spa.Mappers
 
             this.Property(p => p.OnSale).IsOptional();
 
-            this.HasMany(p => p.Categories).WithMany(c => c.Products).Map(m => 
+            this.HasMany(p => p.Categories).WithMany(c => c.Products).Map(m =>
                 {
                     m.ToTable("ProductCategories");
                     m.MapLeftKey("ProductId");

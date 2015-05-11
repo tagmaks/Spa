@@ -1,11 +1,11 @@
-﻿using Spa.Entities;
+﻿using Spa.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace Spa.Infrastructure
+namespace Spa.Data.Infrastructure
 {
     public class SpaDropCreateDatabaseAlways : DropCreateDatabaseAlways<ApplicationDbContext>
     {

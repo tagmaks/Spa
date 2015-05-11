@@ -1,11 +1,11 @@
-﻿using Spa.Entities;
-using Spa.Infrastructure;
+﻿using Spa.Data.Entities;
+using Spa.Data.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Spa.Infrastructure
+namespace Spa.Data.Infrastructure
 {
     public class SpaDataSeeder
     {
@@ -77,7 +77,7 @@ namespace Spa.Infrastructure
                         Email = String.Format("{0}.{1}@{2}", nameGenderMail[0], nameGenderMail[1], nameGenderMail[3]),
                         SubscribedNews = true,
                         CustomerGroup = group,
-                        
+
                     };
                     _ctx.Customers.Add(customer);
                 }

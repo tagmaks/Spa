@@ -1,11 +1,11 @@
-using Spa.Entities;
-using Spa.Infrastructure;
+using Spa.Data.Entities;
+using Spa.Data.Infrastructure;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
-namespace Spa.Infrastructure
+namespace Spa.Data.Infrastructure
 {
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
