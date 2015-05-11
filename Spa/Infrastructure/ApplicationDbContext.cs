@@ -40,18 +40,18 @@ namespace Spa.Data.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new AppUserMapper());
-            modelBuilder.Configurations.Add(new CategoryMapper());
-            modelBuilder.Configurations.Add(new CustomerMapper());
-            modelBuilder.Configurations.Add(new CustomerGroupMapper());
-            modelBuilder.Configurations.Add(new OfferMapper());
-            modelBuilder.Configurations.Add(new OfferListMapper());
-            modelBuilder.Configurations.Add(new OrderMapper());
-            modelBuilder.Configurations.Add(new OrderItemMapper());
-            modelBuilder.Configurations.Add(new ProductMapper());
-            modelBuilder.Configurations.Add(new ProductPhotoMapper());
-            modelBuilder.Configurations.Add(new ProductVideoMapper());
-            modelBuilder.Configurations.Add(new RatioMapper());
+            //modelBuilder.Configurations.Add(new AppUserMapper());
+            //modelBuilder.Configurations.Add(new CategoryMapper());
+            //modelBuilder.Configurations.Add(new CustomerMapper());
+            //modelBuilder.Configurations.Add(new CustomerGroupMapper());
+            //modelBuilder.Configurations.Add(new OfferMapper());
+            //modelBuilder.Configurations.Add(new OfferListMapper());
+            //modelBuilder.Configurations.Add(new OrderMapper());
+            //modelBuilder.Configurations.Add(new OrderItemMapper());
+            //modelBuilder.Configurations.Add(new ProductMapper());
+            //modelBuilder.Configurations.Add(new ProductPhotoMapper());
+            //modelBuilder.Configurations.Add(new ProductVideoMapper());
+            //modelBuilder.Configurations.Add(new RatioMapper());
 
             base.OnModelCreating(modelBuilder);
         }
