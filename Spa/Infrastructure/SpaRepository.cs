@@ -10,19 +10,20 @@ namespace Spa.Data.Infrastructure
     public class SpaRepository 
     {
         private ApplicationDbContext _db;
-        public SpaRepository(ApplicationDbContext db)
+        public SpaRepository()
         {
+            ApplicationDbContext db = new ApplicationDbContext();
             _db = db;
         }
 
-        public IQueryable<Customer> GetAllCustomers()
+        public IQueryable<CustomerGroup> GetAllCustomerGroups()
         {
-            return _db.Customers;
+            return _db.CustomerGroups.AsQueryable();
         }
 
-        public async Task<Customer> GetCustomer(string id)
+        public CustomerGroup GetCustomerGroup(int key)
         {
-            return await _db.Customers.FindAsync(id);
+            return _db.CustomerGroups.Find(key);
         }
 
         //public bool Insert(Product product)

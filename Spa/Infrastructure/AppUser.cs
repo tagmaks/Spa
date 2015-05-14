@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Spa.Data.Infrastructure
 {
-    public class AppUser: IdentityUser
+    public class AppUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         [Required]
         [MaxLength(50)]
@@ -23,7 +23,5 @@ namespace Spa.Data.Infrastructure
         public Enums.Gender? Gender { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
-        //public Customer Customer { get; set; }
-
     }
 }

@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Spa.Data.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
             : base("name=ApplicationConnection")
@@ -17,8 +17,8 @@ namespace Spa.Data.Infrastructure
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
 
-            //Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
-            Database.SetInitializer<ApplicationDbContext>(new SpaDropCreateDatabaseAlways());
+            Database.SetInitializer<ApplicationDbContext>(new SpaCreateDatabaseIfNotExists());
+            //Database.SetInitializer<ApplicationDbContext>(new SpaDropCreateDatabaseAlways());
         }
 
         public static ApplicationDbContext Create()
@@ -40,18 +40,18 @@ namespace Spa.Data.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Configurations.Add(new AppUserMapper());
-            //modelBuilder.Configurations.Add(new CategoryMapper());
-            //modelBuilder.Configurations.Add(new CustomerMapper());
-            //modelBuilder.Configurations.Add(new CustomerGroupMapper());
-            //modelBuilder.Configurations.Add(new OfferMapper());
-            //modelBuilder.Configurations.Add(new OfferListMapper());
-            //modelBuilder.Configurations.Add(new OrderMapper());
-            //modelBuilder.Configurations.Add(new OrderItemMapper());
-            //modelBuilder.Configurations.Add(new ProductMapper());
-            //modelBuilder.Configurations.Add(new ProductPhotoMapper());
-            //modelBuilder.Configurations.Add(new ProductVideoMapper());
-            //modelBuilder.Configurations.Add(new RatioMapper());
+            modelBuilder.Configurations.Add(new AppUserMapper());
+            modelBuilder.Configurations.Add(new CategoryMapper());
+            modelBuilder.Configurations.Add(new CustomerMapper());
+            modelBuilder.Configurations.Add(new CustomerGroupMapper());
+            modelBuilder.Configurations.Add(new OfferMapper());
+            modelBuilder.Configurations.Add(new OfferListMapper());
+            modelBuilder.Configurations.Add(new OrderMapper());
+            modelBuilder.Configurations.Add(new OrderItemMapper());
+            modelBuilder.Configurations.Add(new ProductMapper());
+            modelBuilder.Configurations.Add(new ProductPhotoMapper());
+            modelBuilder.Configurations.Add(new ProductVideoMapper());
+            modelBuilder.Configurations.Add(new RatioMapper());
 
             base.OnModelCreating(modelBuilder);
         }
