@@ -1,6 +1,7 @@
 ﻿using Spa.Data.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Spa.Data.Entities
 {

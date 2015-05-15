@@ -12,7 +12,6 @@ namespace Spa.Data.Mappers
     {
         public AppUserMapper()
         {
-            //this.Property(ap => ap.Id).HasColumnType("int");
             this.Property(ap => ap.Id).HasColumnName("UserID");
         }
     }

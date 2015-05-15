@@ -157,10 +157,6 @@
     <Compile Include="Mappers\ProductPhotoMapper.cs" />
     <Compile Include="Mappers\ProductVideoMapper.cs" />
     <Compile Include="Mappers\RatioMapper.cs" />
-    <Compile Include="Migrations\201505141617299_Init.cs" />
-    <Compile Include="Migrations\201505141617299_Init.Designer.cs">
-      <DependentUpon>201505141617299_Init.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Infrastructure\SpaDataSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,11 +164,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505141617299_Init.resx">
-      <DependentUpon>201505141617299_Init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

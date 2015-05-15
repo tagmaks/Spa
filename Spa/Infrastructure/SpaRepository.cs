@@ -16,6 +16,15 @@ namespace Spa.Data.Infrastructure
             _db = db;
         }
 
+        public IQueryable<Customer> GetAllCustomers()
+        {
+            return _db.Customers.AsQueryable();
+        }
+
+        public Customer GetCustomer(int key)
+        {
+            return _db.Customers.Find(key);
+        }
         public IQueryable<CustomerGroup> GetAllCustomerGroups()
         {
             return _db.CustomerGroups.AsQueryable();

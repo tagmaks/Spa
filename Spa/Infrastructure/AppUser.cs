@@ -23,5 +23,6 @@ namespace Spa.Data.Infrastructure
         public Enums.Gender? Gender { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
+        //public ICollection<CustomUserClaim> Claims { get; set; }
     }
 }
