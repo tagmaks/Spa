@@ -2,29 +2,44 @@
 using Spa.Data.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
+using System.Web.Http.OData.Query;
 
 namespace Spa.Web.Controllers
 {
-    public class CustomersController : EntitySetController<Customer, int>
+    public class CustomersController : ODataController
     {
-        SpaRepository ctx = new SpaRepository();
+        readonly SpaRepository _ctx = new SpaRepository();
         
-        [Queryable]
-        public override IQueryable<Customer> Get()
+        [EnableQuery(PageSize = 10)]
+        public async Task<IHttpActionResult> Get()
         {
-            var x = ctx.GetAllCustomers();
-            return x;
+            var customers = await _ctx.GetCustomers().ToListAsync();
+            var cust = _ctx.GetCustomers().AsEnumerable();
+            if (customers.Count != 0)
+            {
+                return Ok(customers);
+            }
+            return NotFound();
         }
 
-        protected override Customer GetEntityByKey(int key)
+        [EnableQuery]
+        public async Task<IHttpActionResult> Get([FromODataUri] int key)
         {
-            var x = ctx.GetCustomer(key);
-            return x;
+            var customer = await _ctx.GetCustomer(key).FirstOrDefaultAsync();
+            if (customer != null)
+            {
+                return Ok(customer);
+            }
+            return NotFound();
         }
+
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Spa.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -16,14 +17,13 @@ namespace Spa.Data.Infrastructure
             _db = db;
         }
 
-        public IQueryable<Customer> GetAllCustomers()
+        public IQueryable<Customer> GetCustomers()
         {
-            return _db.Customers.AsQueryable();
+            return _db.Customers;
         }
-
-        public Customer GetCustomer(int key)
+        public IQueryable<Customer> GetCustomer(int key)
         {
-            return _db.Customers.Find(key);
+            return _db.Customers.AsQueryable().Where(c => c.Id == key);
         }
         public IQueryable<CustomerGroup> GetAllCustomerGroups()
         {

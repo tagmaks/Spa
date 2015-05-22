@@ -6,24 +6,34 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.OData;
 
 namespace Spa.Web.Controllers
 {
-    public class CustomerGroupsController : EntitySetController<CustomerGroup, int>
+    public class CustomerGroupsController : ODataController
     {
-        SpaRepository ctx = new SpaRepository();
+        readonly SpaRepository _ctx = new SpaRepository();
 
-        public override IQueryable<CustomerGroup> Get()
+        [EnableQuery(PageSize = 10)]
+        public IHttpActionResult Get()
         {
-            var x = ctx.GetAllCustomerGroups();
-            return x;
+            IQueryable<CustomerGroup> customerGroups = _ctx.GetAllCustomerGroups();
+            if (customerGroups != null)
+            {
+                return Ok(customerGroups);
+            }
+            return NotFound();
         }
 
-        protected override CustomerGroup GetEntityByKey(int key)
+        public IHttpActionResult Get([FromODataUri] int key)
         {
-            var x = ctx.GetCustomerGroup(key);
-            return x;
+            CustomerGroup customerGroup = _ctx.GetCustomerGroup(key);
+            if (customerGroup != null)
+            {
+                return Ok(customerGroup);
+            }
+            return NotFound();
         }
     }
 }
