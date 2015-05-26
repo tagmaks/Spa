@@ -3,14 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 
 namespace Spa.Data.Infrastructure
 {
-    public class SpaRepository 
+    public class SpaRepository : ISpaRepository
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public SpaRepository()
         {
             ApplicationDbContext db = new ApplicationDbContext();
@@ -21,18 +23,33 @@ namespace Spa.Data.Infrastructure
         {
             return _db.Customers;
         }
-        public IQueryable<Customer> GetCustomer(int key)
+        public SingleResult<Customer> GetCustomer(int key)
         {
-            return _db.Customers.AsQueryable().Where(c => c.Id == key);
-        }
-        public IQueryable<CustomerGroup> GetAllCustomerGroups()
-        {
-            return _db.CustomerGroups.AsQueryable();
+            var customer = _db.Customers.AsQueryable().Where(c => c.Id == key);
+            return SingleResult.Create(customer);
         }
 
-        public CustomerGroup GetCustomerGroup(int key)
+        public async Task<Customer> GetCustomerAsync(int key)
         {
-            return _db.CustomerGroups.Find(key);
+            return await _db.Customers.FindAsync(key);
+        }
+
+        public async Task<int> PostCustomerAsync(Customer customer)
+        {
+            _db.Customers.Add(customer);
+            return await _db.SaveChangesAsync();
+        }
+
+        
+
+        //public IQueryable<CustomerGroup> GetAllCustomerGroups()
+        //{
+        //    return _db.CustomerGroups.AsQueryable();
+        //}
+
+        //public CustomerGroup GetCustomerGroup(int key)
+        //{
+        //    return _db.CustomerGroups.Find(key);
         }
 
         //public bool Insert(Product product)

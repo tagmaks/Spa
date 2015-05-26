@@ -1,6 +1,7 @@
 ﻿using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -9,7 +10,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
+using System.Web.Http.OData.Extensions;
 using System.Web.Http.OData.Query;
+using HibernatingRhinos.Profiler.Appender.Messages;
 
 namespace Spa.Web.Controllers
 {
@@ -17,29 +20,87 @@ namespace Spa.Web.Controllers
     {
         readonly SpaRepository _ctx = new SpaRepository();
         
+        //[EnableQuery]
+        //public IQueryable<Customer> Get()
+        //{
+        //    var customers = _ctx.GetCustomers();
+        //    if (customers == null)
+        //    {
+        //        throw new HttpResponseException(HttpStatusCode.NotFound);
+        //    }
+        //    return customers;
+        //}
+
         [EnableQuery(PageSize = 10)]
-        public async Task<IHttpActionResult> Get()
+        public IHttpActionResult Get()
         {
-            var customers = await _ctx.GetCustomers().ToListAsync();
-            var cust = _ctx.GetCustomers().AsEnumerable();
-            if (customers.Count != 0)
+            var customers = _ctx.GetCustomers();
+            if (customers == null)
             {
-                return Ok(customers);
+                NotFound();
             }
-            return NotFound();
+            return Ok(customers);
         }
 
         [EnableQuery]
-        public async Task<IHttpActionResult> Get([FromODataUri] int key)
+        public IHttpActionResult Get([FromODataUri] int key)
         {
-            var customer = await _ctx.GetCustomer(key).FirstOrDefaultAsync();
-            if (customer != null)
+            var customer = _ctx.GetCustomer(key);
+            if (customer == null)
             {
-                return Ok(customer);
+                NotFound();
             }
-            return NotFound();
+            return Ok(customer);
         }
 
+        public async Task<IHttpActionResult> Post(Customer customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+            var postCustomerTask = _ctx.PostCustomerAsync(customer);
+            await postCustomerTask;
+            if (!postCustomerTask.IsCompleted)
+            {
+                StatusCode(HttpStatusCode.InternalServerError);
+            }
+            return Created(customer);
+        }
 
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+            var entity = await _ctx.GetCustomerAsync(key);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            customer.Patch(entity);
+            
+            try
+            {
+                
+            }
+        } 
+
+        //[EnableQuery]
+        //public SingleResult<Customer> Get([FromODataUri] int key)
+        //{
+        //    var customer = _ctx.GetCustomer(key);
+        //    if (customer == null)
+        //    {
+        //        throw new HttpResponseException(HttpStatusCode.NotFound);
+        //    }
+        //    return customer;
+        //}
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }
