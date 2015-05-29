@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
-using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
-using Microsoft.Data.Edm;
+using System.Web.Http.OData.Builder;
+using Microsoft.OData.Edm;
 using Newtonsoft.Json.Serialization;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
@@ -20,7 +20,7 @@ namespace Spa.Web
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
 
-        private static IEdmModel GenerateEdmModel()
+        private static Microsoft.Data.Edm.IEdmModel GenerateEdmModel()
         {
             ODataModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<AppUser>("AppUsers");

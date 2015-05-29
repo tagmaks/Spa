@@ -1,35 +1,19 @@
-﻿using Spa.Data.Entities;
-using Spa.Data.Infrastructure;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.OData;
-using System.Web.Http.OData.Extensions;
-using System.Web.Http.OData.Query;
-using HibernatingRhinos.Profiler.Appender.Messages;
+using Spa.Data.Entities;
+using Spa.Data.Infrastructure;
 
 namespace Spa.Web.Controllers
 {
     public class CustomersController : ODataController
     {
-        readonly SpaRepository _ctx = new SpaRepository();
-        
-        //[EnableQuery]
-        //public IQueryable<Customer> Get()
-        //{
-        //    var customers = _ctx.GetCustomers();
-        //    if (customers == null)
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.NotFound);
-        //    }
-        //    return customers;
-        //}
+        private readonly SpaRepository _ctx = new SpaRepository();
 
         [EnableQuery(PageSize = 10)]
         public IHttpActionResult Get()
@@ -57,49 +41,104 @@ namespace Spa.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                BadRequest(ModelState);
+                return BadRequest(ModelState);
             }
             var postCustomerTask = _ctx.PostCustomerAsync(customer);
             await postCustomerTask;
             if (!postCustomerTask.IsCompleted)
             {
-                StatusCode(HttpStatusCode.InternalServerError);
+                return InternalServerError();
             }
             return Created(customer);
         }
 
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> customer)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
         {
+            //Validate(patch.GetEntity());
             if (!ModelState.IsValid)
             {
-                BadRequest(ModelState);
+                return BadRequest(ModelState);
             }
-            var entity = await _ctx.GetCustomerAsync(key);
-            if (entity == null)
+            var customer = await _ctx.GetCustomerAsync(key);
+            if (customer == null)
             {
                 return NotFound();
             }
-            customer.Patch(entity);
-            
+            Validate(customer, typeof(Customer));
+
+
             try
             {
-                
+                await _ctx.PatchCustomerAsync(patch, customer);
             }
+            // Exception occures if entity was changed since the last loading
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!_ctx.CustomerExists(key))
+                {
+                    return NotFound();
+                }
+                return InternalServerError(ex);
+            }
+            return Updated(customer);
+        }
+
+        private void Validate(object model, Type type)
+        {
+            var validator = Configuration.Services.GetBodyModelValidator();
+            var metadataProvider = Configuration.Services.GetModelMetadataProvider();
+
+            HttpActionContext actionContext = new HttpActionContext(ControllerContext, Request.GetActionDescriptor());
+
+            if (!validator.Validate(model, type, metadataProvider, actionContext, String.Empty))
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, actionContext.ModelState));
+            }
+        }
+
+
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (key != update.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _ctx.PutCustomerAsync(update);
+            }
+            // Exception occures if entity was changed since the last loading
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!_ctx.CustomerExists(key))
+                {
+                    return NotFound();
+                }
+                return InternalServerError(ex);
+            }
+            return Updated(update);
+        }
+
+        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
+        {
+            var customer = await _ctx.GetCustomerAsync(key);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            await _ctx.DeleteCustomerAsync(customer);
+            return StatusCode(HttpStatusCode.NoContent);
         } 
 
-        //[EnableQuery]
-        //public SingleResult<Customer> Get([FromODataUri] int key)
-        //{
-        //    var customer = _ctx.GetCustomer(key);
-        //    if (customer == null)
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.NotFound);
-        //    }
-        //    return customer;
-        //}
+
 
         protected override void Dispose(bool disposing)
         {
+            //_ctx._db.Dispose();
             base.Dispose(disposing);
         }
     }
