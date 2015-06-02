@@ -13,12 +13,12 @@ namespace Spa.Web.Controllers
 {
     public class CustomersController : ODataController
     {
-        private readonly SpaRepository _ctx = new SpaRepository();
+        private readonly SpaRepository<Customer> _ctx = new SpaRepository<Customer>();
 
         [EnableQuery(PageSize = 10)]
         public IHttpActionResult Get()
         {
-            var customers = _ctx.GetCustomers();
+            var customers = _ctx.GetAll();
             if (customers == null)
             {
                 NotFound();
@@ -29,7 +29,7 @@ namespace Spa.Web.Controllers
         [EnableQuery]
         public IHttpActionResult Get([FromODataUri] int key)
         {
-            var customer = _ctx.GetCustomer(key);
+            var customer = _ctx.Get(c => c.Id == key);
             if (customer == null)
             {
                 NotFound();
@@ -43,9 +43,13 @@ namespace Spa.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var postCustomerTask = _ctx.PostCustomerAsync(customer);
-            await postCustomerTask;
-            if (!postCustomerTask.IsCompleted)
+            if (customer == null)
+            {
+                return BadRequest();
+            }
+            var postTask = _ctx.PostAsync(customer);
+            await postTask;
+            if (!postTask.IsCompleted)
             {
                 return InternalServerError();
             }
@@ -54,27 +58,38 @@ namespace Spa.Web.Controllers
 
         public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
         {
-            //Validate(patch.GetEntity());
+            //Check if properties name are valid
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var customer = await _ctx.GetCustomerAsync(key);
+            if (patch == null)
+            {
+                return BadRequest();
+            }
+            var customer = await _ctx.GetAsync(key);
             if (customer == null)
             {
                 return NotFound();
             }
-            Validate(customer, typeof(Customer));
 
+            patch.Patch(customer);
+            Validate(customer);
+
+            //Check if filters of properties are valid
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             try
             {
-                await _ctx.PatchCustomerAsync(patch, customer);
+                await _ctx.PatchAsync();
             }
             // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_ctx.CustomerExists(key))
+                if (!_ctx.EntityExists(key))
                 {
                     return NotFound();
                 }
@@ -83,22 +98,12 @@ namespace Spa.Web.Controllers
             return Updated(customer);
         }
 
-        private void Validate(object model, Type type)
-        {
-            var validator = Configuration.Services.GetBodyModelValidator();
-            var metadataProvider = Configuration.Services.GetModelMetadataProvider();
-
-            HttpActionContext actionContext = new HttpActionContext(ControllerContext, Request.GetActionDescriptor());
-
-            if (!validator.Validate(model, type, metadataProvider, actionContext, String.Empty))
-            {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, actionContext.ModelState));
-            }
-        }
-
-
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update)
         {
+            if (update == null)
+            {
+                return BadRequest();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -109,12 +114,12 @@ namespace Spa.Web.Controllers
             }
             try
             {
-                await _ctx.PutCustomerAsync(update);
+                await _ctx.PutAsync(update);
             }
             // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_ctx.CustomerExists(key))
+                if (!_ctx.EntityExists(key))
                 {
                     return NotFound();
                 }
@@ -125,12 +130,12 @@ namespace Spa.Web.Controllers
 
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            var customer = await _ctx.GetCustomerAsync(key);
+            var customer = await _ctx.GetAsync(key);
             if (customer == null)
             {
                 return NotFound();
             }
-            await _ctx.DeleteCustomerAsync(customer);
+            await _ctx.DeleteAsync(customer);
             return StatusCode(HttpStatusCode.NoContent);
         } 
 
