@@ -3,20 +3,21 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
 using Spa.Data.Entities;
+using System;
 
 namespace Spa.Data.Infrastructure
 {
-    public interface ISpaRepository
+    public interface ISpaRepository<TEntity> where TEntity: class
     {
         #region Customer CRUDs
-        bool CustomerExists(int key);
-        IQueryable<Customer> GetCustomers();
-        SingleResult<Customer> GetCustomer(int key);
-        Task<Customer> GetCustomerAsync(int key);
-        Task<int> PostCustomerAsync(Customer customer);
-        Task<int> PatchCustomerAsync(Delta<Customer> patch, Customer origin);
-        Task<int> PutCustomerAsync(Customer update);
-        Task<int> DeleteCustomerAsync(Customer customer);
+        bool EntityExists(int key);
+        IQueryable<TEntity> GetAll();
+        SingleResult<TEntity> Get(Func<TEntity, bool> predicate);
+        Task<TEntity> GetAsync(int key);
+        Task<int> PostAsync(TEntity entity);
+        Task<int> PatchAsync();
+        Task<int> PutAsync(TEntity update);
+        Task<int> DeleteAsync(TEntity entity);
 
         #endregion
     }

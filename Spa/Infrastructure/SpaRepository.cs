@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
 using Spa.Data.Entities;
+using System;
 
 namespace Spa.Data.Infrastructure
 {
-    public class SpaRepository : ISpaRepository
+    public class SpaRepository<TEntity> : ISpaRepository<TEntity> where TEntity: class 
     {
         private readonly ApplicationDbContext _db;
 
@@ -19,53 +20,53 @@ namespace Spa.Data.Infrastructure
 
         #region Customer CRUDs
 
-        public bool CustomerExists(int key)
+        public bool EntityExists(int key)
         {
-            return _db.Customers.Any(c => c.Id == key);
+            return _db.Set<TEntity>().Find(key) != null;
         }
 
-        public IQueryable<Customer> GetCustomers()
+        public IQueryable<TEntity> GetAll()
         {
-            return _db.Customers;
+            return _db.Set<TEntity>();
         }
 
-        public SingleResult<Customer> GetCustomer(int key)
+        public SingleResult<TEntity> Get(Func<TEntity, bool> predicate)
         {
-            var customer = _db.Customers.AsQueryable().Where(c => c.Id == key);
-            return SingleResult.Create(customer);
+            var entity = _db.Set<TEntity>().Where(predicate).AsQueryable();
+            
+            return SingleResult.Create<TEntity>(entity);
         }
 
-        public async Task<Customer> GetCustomerAsync(int key)
+        public async Task<TEntity> GetAsync(int key)
         {
-            return await _db.Customers.FindAsync(key);
+            return await _db.Set<TEntity>().FindAsync(key);
         }
-
-        public async Task<int> PostCustomerAsync(Customer customer)
+            
+        public async Task<int> PostAsync(TEntity entity)
         {
-            _db.Customers.Add(customer);
+            _db.Set<TEntity>().Add(entity);
             return await _db.SaveChangesAsync();
         }
 
-        public async Task<int> PatchCustomerAsync(Delta<Customer> patch, Customer origin)
+        public async Task<int> PatchAsync()
         {
-            patch.Patch(origin);
             return await _db.SaveChangesAsync();
         }
 
-        public async Task<int> PutCustomerAsync(Customer update)
+        public async Task<int> PutAsync(TEntity update)
         {
-
             _db.Entry(update).State = EntityState.Modified;
             return await _db.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteCustomerAsync(Customer customer)
+        public async Task<int> DeleteAsync(TEntity entity)
         {
-            _db.Customers.Remove(customer);
+            _db.Set<TEntity>().Remove(entity);
             return await _db.SaveChangesAsync();
         }
 
         #endregion
+
     }
 
     //public bool Insert(Product product)

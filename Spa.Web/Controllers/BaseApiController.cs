@@ -10,14 +10,14 @@ namespace Spa.Web.Controllers
 {
     public class BaseApiController : ApiController
     {
-        private ISpaRepository _repo;
-        public BaseApiController(ISpaRepository repo)
-        {
-            _repo = repo;
-        }
-        protected ISpaRepository Repo
-        {
-            get { return _repo; }
-        }
+        //private ISpaRepository _repo;
+        //public BaseApiController(ISpaRepository repo)
+        //{
+        //    _repo = repo;
+        //}
+        //protected ISpaRepository Repo
+        //{
+        //    get { return _repo; }
+        //}
     }
 }
