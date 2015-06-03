@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.OData;
+using System.Web.Http.OData.Query;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 
@@ -97,7 +99,7 @@ namespace Spa.Web.Controllers
         }
 
 
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update, ODataQueryOptions options)
         {
             if (!ModelState.IsValid)
             {
@@ -106,6 +108,10 @@ namespace Spa.Web.Controllers
             if (key != update.Id)
             {
                 return BadRequest();
+            }
+            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.GetCustomer(key).Queryable) == null)
+            {
+                return StatusCode(HttpStatusCode.PreconditionFailed);
             }
             try
             {

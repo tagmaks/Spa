@@ -1,6 +1,7 @@
 ﻿using Spa.Data.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace Spa.Data.Entities
@@ -14,6 +15,7 @@ namespace Spa.Data.Entities
         //}
         //public int CustomerId { get; set; }
         public DateTime DateOfBirth { get; set; }
+        [ConcurrencyCheck]
         public bool SubscribedNews { get; set; }
         public CustomerGroup CustomerGroup { get; set; }
         //public ApplicationUser ApplicationUser { get; set; }
