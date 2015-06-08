@@ -1,13 +1,10 @@
-﻿using System;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
+﻿using System.Data.Entity.Infrastructure;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.OData;
-using System.Web.Http.OData.Query;
+using System.Web.OData;
+using System.Web.OData.Query;
+using CacheCow.Server.CacheControlPolicy;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 
@@ -29,6 +26,7 @@ namespace Spa.Web.Controllers
         }
 
         [EnableQuery]
+        [HttpCacheControlPolicy(true, 10)]
         public IHttpActionResult Get([FromODataUri] int key)
         {
             var customer = _ctx.Get(c => c.Id == key);
@@ -58,21 +56,28 @@ namespace Spa.Web.Controllers
             return Created(customer);
         }
 
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch, ODataQueryOptions<Customer> options)
         {
             //Check if properties name are valid
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             if (patch == null)
             {
-                return BadRequest();
+                return BadRequest("Entity fields cannot be empty");
             }
+
             var customer = await _ctx.GetAsync(key);
             if (customer == null)
             {
                 return NotFound();
+            }
+
+            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.Get(c => c.Id == key).Queryable) == null)
+            {
+                return StatusCode(HttpStatusCode.PreconditionFailed);
             }
 
             patch.Patch(customer);
@@ -100,20 +105,8 @@ namespace Spa.Web.Controllers
             return Updated(customer);
         }
 
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update, ODataQueryOptions<Customer> options)
         {
-            if (update == null)
-            {
-                return BadRequest();
-            }
-<<<<<<< HEAD
-        }
-
-
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update, ODataQueryOptions options)
-        {
-=======
->>>>>>> origin/develop
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -122,7 +115,8 @@ namespace Spa.Web.Controllers
             {
                 return BadRequest();
             }
-            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.GetCustomer(key).Queryable) == null)
+            //Check if any properies have changed by ETag header (IfMatch)
+            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.Get(c => c.Id == key).Queryable) == null)
             {
                 return StatusCode(HttpStatusCode.PreconditionFailed);
             }
@@ -130,7 +124,7 @@ namespace Spa.Web.Controllers
             {
                 await _ctx.PutAsync(update);
             }
-            // Exception occures if entity was changed since the last loading
+                // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
                 if (!_ctx.EntityExists(key))
@@ -151,9 +145,7 @@ namespace Spa.Web.Controllers
             }
             await _ctx.DeleteAsync(customer);
             return StatusCode(HttpStatusCode.NoContent);
-        } 
-
-
+        }
 
         protected override void Dispose(bool disposing)
         {

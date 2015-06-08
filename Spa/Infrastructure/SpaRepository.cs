@@ -1,14 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.OData;
-using Spa.Data.Entities;
-using System;
 
 namespace Spa.Data.Infrastructure
 {
-    public class SpaRepository<TEntity> : ISpaRepository<TEntity> where TEntity: class 
+    public class SpaRepository<TEntity> : ISpaRepository<TEntity> where TEntity : class
     {
         private readonly ApplicationDbContext _db;
 
@@ -33,15 +30,15 @@ namespace Spa.Data.Infrastructure
         public SingleResult<TEntity> Get(Func<TEntity, bool> predicate)
         {
             var entity = _db.Set<TEntity>().Where(predicate).AsQueryable();
-            
-            return SingleResult.Create<TEntity>(entity);
+
+            return SingleResult.Create(entity);
         }
 
         public async Task<TEntity> GetAsync(int key)
         {
             return await _db.Set<TEntity>().FindAsync(key);
         }
-            
+
         public async Task<int> PostAsync(TEntity entity)
         {
             _db.Set<TEntity>().Add(entity);
@@ -55,7 +52,7 @@ namespace Spa.Data.Infrastructure
 
         public async Task<int> PutAsync(TEntity update)
         {
-            _db.Entry(update).State = EntityState.Modified;
+            //_db.Entry(update).State = EntityState.Modified;
             return await _db.SaveChangesAsync();
         }
 
@@ -66,7 +63,6 @@ namespace Spa.Data.Infrastructure
         }
 
         #endregion
-
     }
 
     //public bool Insert(Product product)
@@ -110,5 +106,4 @@ namespace Spa.Data.Infrastructure
     //                        };
     //    return detailedOrder;
     //}
-
 }

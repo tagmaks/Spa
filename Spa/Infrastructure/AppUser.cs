@@ -14,10 +14,11 @@ namespace Spa.Data.Infrastructure
         [MaxLength(50)]
         public string FirstName { get; set; }
 
+        
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
-
+        [ConcurrencyCheck]
         [MaxLength(50)]
         public string MiddleName { get; set; }
         public Enums.Gender? Gender { get; set; }

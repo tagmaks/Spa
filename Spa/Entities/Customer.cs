@@ -15,7 +15,6 @@ namespace Spa.Data.Entities
         //}
         //public int CustomerId { get; set; }
         public DateTime DateOfBirth { get; set; }
-        [ConcurrencyCheck]
         public bool SubscribedNews { get; set; }
         public CustomerGroup CustomerGroup { get; set; }
         //public ApplicationUser ApplicationUser { get; set; }
