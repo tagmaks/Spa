@@ -8,6 +8,8 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace Spa.Web
 {
     public class Global : HttpApplication

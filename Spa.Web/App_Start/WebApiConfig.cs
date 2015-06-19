@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Web.OData.Extensions;
 using System.Web.OData.Builder;
 using Microsoft.OData.Edm;
@@ -9,6 +10,7 @@ using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 using Spa.Web.Helpers;
 using Spa.Web.Infrastructure;
+using Spa.Web.Tracing;
 
 namespace Spa.Web
 {
@@ -30,6 +32,9 @@ namespace Spa.Web
             //Configure HTTP Caching using Entity Tags (ETags)
             var cacheCowCacheHandler = CachingFactory.GetCachingHandlerByCacheStore(CachingStores.SqlCacheStore, config, "ApplicationConnection");
             config.MessageHandlers.Add(cacheCowCacheHandler);
+
+            config.Services.Add(typeof(IExceptionLogger), new GlobalExceptionLogger());
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
         }
 
         private static IEdmModel GenerateEdmModel()

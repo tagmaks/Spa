@@ -16,8 +16,9 @@ namespace Spa.Data.Entities
         //public int CustomerId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool SubscribedNews { get; set; }
+        [Required]
         public CustomerGroup CustomerGroup { get; set; }
-        //public ApplicationUser ApplicationUser { get; set; }
+        //public AppUser ApplicationUser { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Ratio> Ratios { get; set; }
     }
