@@ -58,9 +58,9 @@
     <Reference Include="HibernatingRhinos.Profiler.Appender">
       <HintPath>C:\Users\mivanov\Desktop\EntityFramework.Profiler-v3.0-Build-3052\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
