@@ -14,7 +14,7 @@ namespace Spa.Data.Entities
         //    ApplicationUser = new ApplicationUser();
         //}
         //public int CustomerId { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public bool SubscribedNews { get; set; }
         [Required]
         public CustomerGroup CustomerGroup { get; set; }

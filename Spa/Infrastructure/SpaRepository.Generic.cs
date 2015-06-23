@@ -15,8 +15,6 @@ namespace Spa.Data.Infrastructure
             _db = db;
         }
 
-        #region Customer CRUDs
-
         public bool EntityExists(int key)
         {
             return _db.Set<TEntity>().Find(key) != null;
@@ -61,8 +59,6 @@ namespace Spa.Data.Infrastructure
             _db.Set<TEntity>().Remove(entity);
             return await _db.SaveChangesAsync();
         }
-
-        #endregion
     }
 
     //public bool Insert(Product product)

@@ -155,6 +155,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CustomerGroupsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Filters\EntityValidationErrorsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

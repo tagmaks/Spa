@@ -7,7 +7,7 @@ namespace Spa.Data.Infrastructure
 {
     public interface ISpaRepository<TEntity> where TEntity: class
     {
-        #region Customer CRUDs
+        
         bool EntityExists(int key);
         IQueryable<TEntity> GetAll();
         SingleResult<TEntity> Get(Func<TEntity, bool> predicate);
@@ -16,7 +16,5 @@ namespace Spa.Data.Infrastructure
         Task<int> PatchAsync();
         Task<int> PutAsync(TEntity update);
         Task<int> DeleteAsync(TEntity entity);
-
-        #endregion
     }
 }   
