@@ -9,12 +9,11 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using GenericServices;
 
 namespace Spa.Data.Infrastructure
 {
     public class ApplicationDbContext :
-        IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IGenericServicesDbContext
+        IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
             : base("name=ApplicationConnection")
