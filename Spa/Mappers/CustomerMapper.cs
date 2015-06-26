@@ -13,7 +13,7 @@ namespace Spa.Data.Mappers
         public CustomerMapper()
         {
             this.Property(c => c.DateOfBirth).IsOptional();
-            this.Property(c => c.DateOfBirth).HasColumnType("datetime2");
+            this.Property(c => c.DateOfBirth).HasColumnType("smalldatetime");
 
             this.Property(c => c.SubscribedNews).IsOptional();      
 

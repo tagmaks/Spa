@@ -9,11 +9,13 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using GenericServices;
 
 namespace Spa.Data.Infrastructure
 {
     public class ApplicationDbContext :
-        IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+        IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>,
+        IGenericServicesDbContext
     {
         public ApplicationDbContext()
             : base("name=ApplicationConnection")
@@ -23,29 +25,6 @@ namespace Spa.Data.Infrastructure
 
             Database.SetInitializer<ApplicationDbContext>(new SpaCreateDatabaseIfNotExists());
             //Database.SetInitializer<ApplicationDbContext>(new SpaDropCreateDatabaseAlways());
-        }
-
-
-        public Task<EfStatus> SaveChangesWithValidation()
-        {
-            var status = new EfStatus();
-            try
-            {
-               SaveChangesAsync(); //then update it
-            }
-            catch (DbEntityValidationException ex)
-            {
-                return Task.FromResult<EfStatus>(status.SetErrors(ex.EntityValidationErrors));
-            }
-            catch (DbUpdateException ex)
-            {
-                var decodedErrors = status.TryDecodeDbUpdateException(ex);
-                if (decodedErrors == null)
-                    throw; //it isn't something we understand so rethrow
-                return Task.FromResult<EfStatus>(status.SetErrors(decodedErrors));
-            }
-            //else it isn't an exception we understand so it throws in the normal way
-            return Task.FromResult<EfStatus>(status);
         }
 
         public static ApplicationDbContext Create()
