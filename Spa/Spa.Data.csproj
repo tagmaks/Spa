@@ -39,6 +39,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
@@ -139,7 +146,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\DataLayerModule.cs" />
+    <Compile Include="App_Start\ServiceLayerModule.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Dtos\CustomerDto.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\CustomerGroup.cs" />
@@ -157,7 +167,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\ApplicationDbContext.cs" />
-    <Compile Include="Infrastructure\EFStatus.cs" />
     <Compile Include="Infrastructure\IdentityModels.cs" />
     <Compile Include="Infrastructure\SpaCreateDatabaseIfNotExists.cs" />
     <Compile Include="Infrastructure\SpaDropCreateDatabaseAlways.cs" />

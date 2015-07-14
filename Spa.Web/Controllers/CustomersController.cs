@@ -1,23 +1,35 @@
 ﻿using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Query;
 using CacheCow.Server.CacheControlPolicy;
+using GenericServices;
+using GenericServices.Services;
+using GenericServices.Services.Concrete;
+using Spa.Data.Dtos;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
+using Spa.Web.Infrastructure;
 
 namespace Spa.Web.Controllers
 {
     public class CustomersController : ODataController
     {
-        private readonly SpaRepository<Customer> _ctx = new SpaRepository<Customer>();
+        private readonly ISpaRepository<Customer> _repo;
+
+        public CustomersController(ISpaRepository<Customer> repo)
+        {
+            _repo = repo;
+        }
 
         [EnableQuery(PageSize = 10)]
         public IHttpActionResult Get()
         {
-            var customers = _ctx.GetAll();
+            var customers = _repo.GetAll2();
+            //var customers = _repo.GetAll();
             if (customers == null)
             {
                 NotFound();
@@ -26,10 +38,9 @@ namespace Spa.Web.Controllers
         }
 
         [EnableQuery]
-        [HttpCacheControlPolicy(true, 10)]
         public IHttpActionResult Get([FromODataUri] int key)
         {
-            var customer = _ctx.Get(c => c.Id == key);
+            var customer = _repo.Get(c => c.Id == key);
             if (customer == null)
             {
                 NotFound();
@@ -39,24 +50,20 @@ namespace Spa.Web.Controllers
 
         public async Task<IHttpActionResult> Post(Customer customer)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             if (customer == null)
             {
                 return BadRequest();
             }
-            var postTask = _ctx.PostAsync(customer);
-            await postTask;
-            if (!postTask.IsCompleted)
+            var response = await _repo.PostAsync2(customer);
+            if (response.IsValid)
             {
-                return InternalServerError();
+                return Created(customer);
             }
-            return Created(customer);
+            response.CopyErrorsToModelState(ModelState);
+            return BadRequest(ModelState);
         }
 
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch, ODataQueryOptions<Customer> options)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
         {
             //Check if properties name are valid
             if (!ModelState.IsValid)
@@ -66,43 +73,46 @@ namespace Spa.Web.Controllers
 
             if (patch == null)
             {
-                return BadRequest("Entity fields cannot be empty");
+                return BadRequest();
+                //return BadRequest("Entity fields cannot be empty");
             }
 
-            var customer = await _ctx.GetAsync(key);
+            var entity = await _repo.GetAsync2(key);
+            var customer = entity.Result;
             if (customer == null)
             {
                 return NotFound();
             }
 
-            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.Get(c => c.Id == key).Queryable) == null)
-            {
-                return StatusCode(HttpStatusCode.PreconditionFailed);
-            }
-
             patch.Patch(customer);
-            Validate(customer);
+            //Validate(customer);
 
-            //Check if filters of properties are valid
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            ////Check if filters of properties are valid
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            try
+            var response = await _repo.PatchAsync2(customer);
+            if (response.IsValid)
             {
-                await _ctx.PatchAsync();
+                return Updated(customer);
             }
+            response.CopyErrorsToModelState(ModelState);
+            return BadRequest(ModelState);
+            //try
+            //{
+            //    await _repo.PatchAsync();
+            //}
             // Exception occures if entity was changed since the last loading
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!_ctx.EntityExists(key))
-                {
-                    return NotFound();
-                }
-                return InternalServerError(ex);
-            }
-            return Updated(customer);
+            //catch (DbUpdateConcurrencyException ex)
+            //{
+            //    if (!_repo.EntityExists(key))
+            //    {
+            //        return NotFound();
+            //    }
+            //    return InternalServerError(ex);
+            //}
         }
 
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update, ODataQueryOptions<Customer> options)
@@ -116,18 +126,18 @@ namespace Spa.Web.Controllers
                 return BadRequest();
             }
             //Check if any properies have changed by ETag header (IfMatch)
-            if (options.IfMatch != null && options.IfMatch.ApplyTo(_ctx.Get(c => c.Id == key).Queryable) == null)
+            if (options.IfMatch != null && options.IfMatch.ApplyTo(_repo.Get(c => c.Id == key).Queryable) == null)
             {
                 return StatusCode(HttpStatusCode.PreconditionFailed);
             }
             try
             {
-                await _ctx.PutAsync(update);
+                await _repo.PutAsync(update);
             }
                 // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_ctx.EntityExists(key))
+                if (!_repo.EntityExists(key))
                 {
                     return NotFound();
                 }
@@ -138,19 +148,19 @@ namespace Spa.Web.Controllers
 
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            var customer = await _ctx.GetAsync(key);
+            var customer = await _repo.GetAsync(key);
             if (customer == null)
             {
                 return NotFound();
             }
-            await _ctx.DeleteAsync(customer);
+            await _repo.DeleteAsync(customer);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            //_ctx._db.Dispose();
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    //_repo._db.Dispose();
+        //    base.Dispose(disposing);
+        //}
     }
 }

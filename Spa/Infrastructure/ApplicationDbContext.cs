@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using Spa.Data.Entities;
-using Spa.Data.Mappers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+using GenericLibsBase.Core;
 using GenericServices;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Spa.Data.Entities;
+using Spa.Data.Mappers;
 
 namespace Spa.Data.Infrastructure
 {
@@ -23,14 +21,65 @@ namespace Spa.Data.Infrastructure
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
 
-            Database.SetInitializer<ApplicationDbContext>(new SpaCreateDatabaseIfNotExists());
+            Database.SetInitializer(new SpaCreateDatabaseIfNotExists());
             //Database.SetInitializer<ApplicationDbContext>(new SpaDropCreateDatabaseAlways());
         }
 
-        public static ApplicationDbContext Create()
+        ///// <summary>
+        ///// This has been overridden to handle:
+        ///// a) Updating of modified items (see p194 in DbContext book)
+        ///// </summary>
+        ///// <returns></returns>
+        //public override int SaveChanges()
+        //{
+        //    HandleChangeTracking();
+        //    return base.SaveChanges();
+        //}
+
+        ///// <summary>
+        ///// Same for async
+        ///// </summary>
+        ///// <returns></returns>
+        //public override Task<int> SaveChangesAsync()
+        //{
+        //    HandleChangeTracking();
+        //    return base.SaveChangesAsync();
+        //}
+
+        private void HandleChangeTracking()
         {
-            return new ApplicationDbContext();
+            //Debug.WriteLine("----------------------------------------------");
+            //foreach (var entity in ChangeTracker.Entries()
+            //.Where(
+            //    e =>
+            //    e.State == EntityState.Added || e.State == EntityState.Modified))
+            //{
+            //    Debug.WriteLine("Entry {0}, state {1}", entity.Entity, entity.State);
+            //}       
+
+            foreach (var entity in ChangeTracker.Entries()
+                                                .Where(
+                                                    e =>
+                                                    e.State == EntityState.Added || e.State == EntityState.Modified))
+            {
+                //UpdateTrackedEntity(entity);
+            }
+
         }
+
+        /// <summary>
+        /// Looks at everything that has changed and applies any further action if required.
+        /// </summary>
+        /// <param name="entityEntry"></param>
+        /// <returns></returns>
+        //private static void UpdateTrackedEntity(DbEntityEntry entityEntry)
+        //{
+        //    var trackUpdateClass = entityEntry.Entity as IModifiedEntity;
+        //    if (trackUpdateClass == null) return;
+        //    trackUpdateClass.ModifiedDate = DateTime.UtcNow;
+        //    if (entityEntry.State == EntityState.Added)
+        //        trackUpdateClass.rowguid = Guid.NewGuid();
+        //}
 
         //public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -44,6 +93,11 @@ namespace Spa.Data.Infrastructure
         public DbSet<ProductPhoto> ProductPhotos { get; set; }
         public DbSet<ProductVideo> ProductVideos { get; set; }
         public DbSet<Ratio> Ratios { get; set; }
+
+        public static ApplicationDbContext Create()
+        {
+            return new ApplicationDbContext();
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

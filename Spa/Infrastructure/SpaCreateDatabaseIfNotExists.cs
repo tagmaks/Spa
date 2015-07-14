@@ -13,6 +13,5 @@ namespace Spa.Data.Infrastructure
             new SpaDataSeeder(context).Seed();
             base.Seed(context);
         }
-
     }
 }

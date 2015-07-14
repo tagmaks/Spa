@@ -13,13 +13,15 @@ using Spa.Data.Infrastructure;
 
 namespace Spa.Web.Controllers
 {
-    //[HttpCacheControlPolicy(true, 100)]
     public class CustomerGroupsController : ODataController
     {
-        //private static ODataValidationSettings _validationSettings = new ODataValidationSettings();
-        private readonly SpaRepository<CustomerGroup> _ctx = new SpaRepository<CustomerGroup>();
-        // GET: odata/CustomerGroups
+        private readonly ISpaRepository<CustomerGroup> _repo;
 
+        // GET: odata/CustomerGroups
+        public CustomerGroupsController(ISpaRepository<CustomerGroup> repo)
+        {
+            _repo = repo;
+        }
         [EnableQuery(PageSize = 10, AllowedQueryOptions = AllowedQueryOptions.All)]
         //[HttpCacheControlPolicy(true, 100)]
         public IHttpActionResult GetCustomerGroups(ODataQueryOptions<CustomerGroup> options)
@@ -34,7 +36,7 @@ namespace Spa.Web.Controllers
             //    return BadRequest(ex.Message);
             //}
 
-            var customerGroups = _ctx.GetAll();
+            var customerGroups = _repo.GetAll();
             if (customerGroups == null)
             {
                 NotFound();
@@ -65,7 +67,7 @@ namespace Spa.Web.Controllers
             //    return BadRequest(ex.Message);
             //}
 
-            var customerGroup = _ctx.Get(c => c.CustomerGroupId == key);
+            var customerGroup = _repo.Get(c => c.CustomerGroupId == key);
             if (customerGroup == null)
             {
                 NotFound();
@@ -92,7 +94,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var customer = await _ctx.GetAsync(key);
+            var customer = await _repo.GetAsync(key);
             if (customer == null)
             {
                 return NotFound();
@@ -102,12 +104,12 @@ namespace Spa.Web.Controllers
 
             try
             {
-                await _ctx.PatchAsync();
+                await _repo.PatchAsync();
             }
             // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_ctx.EntityExists(key))
+                if (!_repo.EntityExists(key))
                 {
                     return NotFound();
                 }
@@ -127,7 +129,7 @@ namespace Spa.Web.Controllers
             {
                 return BadRequest();
             }
-            var postTask = _ctx.PostAsync(customerGroup);
+            var postTask = _repo.PostAsync(customerGroup);
             await postTask;
             if (!postTask.IsCompleted)
             {
@@ -158,7 +160,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var customerGroup = await _ctx.GetAsync(key);
+            var customerGroup = await _repo.GetAsync(key);
             if (customerGroup == null)
             {
                 return NotFound();
@@ -168,12 +170,12 @@ namespace Spa.Web.Controllers
 
             try
             {
-                await _ctx.PatchAsync();
+                await _repo.PatchAsync();
             }
                 // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_ctx.EntityExists(key))
+                if (!_repo.EntityExists(key))
                 {
                     return NotFound();
                 }

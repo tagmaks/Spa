@@ -58,8 +58,9 @@ namespace Spa.Data.Infrastructure
             {
                 var group = new CustomerGroup()
                 {
+                    
                     GroupName = "Default",
-                    Discount = 0
+                    Discount = 10
                 };
                 _ctx.CustomerGroups.Add(group);
 

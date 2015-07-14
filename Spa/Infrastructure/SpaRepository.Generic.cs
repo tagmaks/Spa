@@ -1,19 +1,29 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Http;
+using GenericLibsBase;
+using GenericServices;
+using GenericServices.Core;
+using GenericServices.Services;
+using GenericServices.ServicesAsync;
 
 namespace Spa.Data.Infrastructure
 {
-    public class SpaRepository<TEntity> : ISpaRepository<TEntity> where TEntity : class
+    public class SpaRepository<TEntity, TDto> : ISpaRepository<TEntity,TDto> 
+        where TEntity : class, new()
+        where TDto : EfGenericDto<TEntity, TDto>, new()
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IGenericServicesDbContext _db;
 
-        public SpaRepository()
+        public SpaRepository(IGenericServicesDbContext context)
         {
-            var db = new ApplicationDbContext();
-            _db = db;
+            _db = context;
         }
+
 
         public bool EntityExists(int key)
         {
@@ -59,7 +69,51 @@ namespace Spa.Data.Infrastructure
             _db.Set<TEntity>().Remove(entity);
             return await _db.SaveChangesAsync();
         }
+
+        public IListService<TEntity> ListService { get; set; }
+        public IDetailServiceAsync<TEntity> DetailServiceAsync { get; set; }
+        public IDetailService<TEntity> DetailService { get; set; }
+        public ICreateServiceAsync<TEntity> CreateServiceAsync { get; set; }
+        public IUpdateServiceAsync<TEntity> UpdateServiceAsync { get; set; }
+        public IUpdateService<TEntity> UpdateService { get; set; }
+
+
+        //Using GenericService services
+
+        public IQueryable<TEntity> GetAll2()
+        {
+            return ListService.GetAll();
+        }
+        public async Task<ISuccessOrErrors<TEntity>> GetAsync2(int key)
+        {
+            var keys = new ArrayList {key};
+            return await DetailServiceAsync.GetDetailAsync(key);
+        }
+        public ISuccessOrErrors<TEntity> Get2(int key)
+        {
+            return DetailService.GetDetail(key);
+        }
+
+        public Task<ISuccessOrErrors<TDto>> Get2(Expression<Func<TEntity, bool>> whereExpression)
+        {
+            return DetailServiceAsync.GetDetailUsingWhereAsync(whereExpression);
+        }
+
+        public async Task<ISuccessOrErrors> PostAsync2(TEntity entity)
+        {
+            return await CreateServiceAsync.CreateAsync(entity);
+        }
+
+        public async Task<ISuccessOrErrors> PatchAsync2(TEntity entity)
+        {
+            return await UpdateServiceAsync.UpdateAsync(entity);
+        }
+
+
     }
+
+
+
 
     //public bool Insert(Product product)
     //{

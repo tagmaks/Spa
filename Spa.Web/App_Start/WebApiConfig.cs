@@ -26,6 +26,9 @@ namespace Spa.Web
 
             config.AddODataQueryFilter();
 
+            //setup dependency injection items
+            DependencyInjectionConfig.RegisterDependencyInjection();
+
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
