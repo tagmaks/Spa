@@ -9,10 +9,13 @@ using GenericServices.ServicesAsync;
 
 namespace Spa.Data.Infrastructure
 {
-    public interface ISpaRepository<TEntity, TDto> where TEntity: class, new()
+    public interface ISpaRepository<TEntity, TDto, TDtoAsync>
+        where TEntity: class, new()
+        where TDto : class, new()
+        where TDtoAsync : class, new()
     {
 
-
+        #region Old methods
         bool EntityExists(int key);
         IQueryable<TEntity> GetAll();
         SingleResult<TEntity> Get(Func<TEntity, bool> predicate);
@@ -21,14 +24,13 @@ namespace Spa.Data.Infrastructure
         Task<int> PatchAsync();
         Task<int> PutAsync(TEntity update);
         Task<int> DeleteAsync(TEntity entity);
-
+        #endregion
 
         IListService<TEntity> ListService { get; set; }
         IDetailServiceAsync<TEntity> DetailServiceAsync { get; set; }
         IDetailService<TEntity> DetailService { get; set; }
         ICreateServiceAsync<TEntity> CreateServiceAsync { get; set; }
         IUpdateServiceAsync<TEntity> UpdateServiceAsync { get; set; }
-        IUpdateService<TEntity> UpdateService { get; set; }
 
         IQueryable<TEntity> GetAll2();
         Task<ISuccessOrErrors<TEntity>> GetAsync2(int key);
@@ -36,5 +38,10 @@ namespace Spa.Data.Infrastructure
         Task<ISuccessOrErrors> PostAsync2(TEntity entity);
         Task<ISuccessOrErrors> PatchAsync2(TEntity entity);
 
+        IQueryable<TDto> GetAllDto();
+        Task<ISuccessOrErrors<TDtoAsync>> GetDtoAsync(int key);
+        ISuccessOrErrors<TDto> GetDto(int key);
+        Task<ISuccessOrErrors> PostDtoAsync(TDtoAsync dto);
+        Task<ISuccessOrErrors> PatchDtoAsync(TDtoAsync dto);
     }
 }   

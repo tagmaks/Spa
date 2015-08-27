@@ -15,6 +15,7 @@ using GenericServices.Services.Concrete;
 using GenericServices.ServicesAsync;
 using GenericServices.ServicesAsync.Concrete;
 using Spa.Data;
+using Spa.Data.Dtos;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 using Spa.Web.Controllers;
@@ -41,8 +42,6 @@ namespace Spa.Web
             // You can register controllers all at once using assembly scanning...
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
-
-
             //builder.RegisterAssemblyTypes()
             //    .Where(t => t.Name.EndsWith("Service"))
             //    .AsImplementedInterfaces()
@@ -52,12 +51,12 @@ namespace Spa.Web
             //    .As<IListService<Customer>>()
             //    .UsingConstructor(typeof(IGenericServicesDbContext));
 
-            builder.RegisterGeneric(typeof (SpaRepository<>))
-                .As(typeof (ISpaRepository<>))
+            builder.RegisterGeneric(typeof (SpaRepository<,,>))
+                .As(typeof (ISpaRepository<,,>))
                 .InstancePerRequest()
                 .PropertiesAutowired();
 
-
+            #region Property injection <TEntity>
             builder.RegisterGeneric(typeof(ListService<>))
                 .As(typeof(IListService<>))
                 .InstancePerRequest();
@@ -77,10 +76,29 @@ namespace Spa.Web
             builder.RegisterGeneric(typeof(UpdateServiceAsync<>))
                 .As(typeof(IUpdateServiceAsync<>))
                 .InstancePerRequest();
+            #endregion
 
-            builder.RegisterGeneric(typeof(UpdateService<>))
-                .As(typeof(IUpdateService<>))
+            #region Property injection <TEntity, TDto>
+            builder.RegisterGeneric(typeof(ListService<,>))
+                .As(typeof(IListService<,>))
                 .InstancePerRequest();
+
+            builder.RegisterGeneric(typeof(DetailServiceAsync<,>))
+                .As(typeof(IDetailServiceAsync<,>))
+                .InstancePerRequest();
+
+            builder.RegisterGeneric(typeof(DetailService<,>))
+                .As(typeof(IDetailService<,>))
+                .InstancePerRequest();
+
+            builder.RegisterGeneric(typeof(CreateServiceAsync<,>))
+                .As(typeof(ICreateServiceAsync<,>))
+                .InstancePerRequest();
+
+            builder.RegisterGeneric(typeof(UpdateServiceAsync<,>))
+                .As(typeof(IUpdateServiceAsync<,>))
+                .InstancePerRequest();
+            #endregion
 
             //builder.RegisterGeneric(typeof(DeleteService))
             //    .As(typeof(IDeleteService))
@@ -98,7 +116,7 @@ namespace Spa.Web
             //    });
 
             builder.RegisterType(typeof(CustomersController))
-                .UsingConstructor(typeof(ISpaRepository<Customer>));
+                .UsingConstructor(typeof(ISpaRepository<Customer, CustomerDto, CustomerDtoAsync>));
 
             Load(builder);
 

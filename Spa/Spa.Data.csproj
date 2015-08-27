@@ -41,8 +41,9 @@
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi">
+    <Reference Include="Autofac.Integration.WebApi, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -150,6 +151,7 @@
     <Compile Include="App_Start\ServiceLayerModule.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Dtos\CustomerDto.cs" />
+    <Compile Include="Dtos\CustomerDtoAsync.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\CustomerGroup.cs" />

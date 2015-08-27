@@ -18,9 +18,9 @@ namespace Spa.Web.Controllers
 {
     public class CustomersController : ODataController
     {
-        private readonly ISpaRepository<Customer> _repo;
+        private readonly ISpaRepository<Customer, CustomerDto, CustomerDtoAsync> _repo;
 
-        public CustomersController(ISpaRepository<Customer> repo)
+        public CustomersController(ISpaRepository<Customer, CustomerDto, CustomerDtoAsync> repo)
         {
             _repo = repo;
         }
@@ -28,8 +28,7 @@ namespace Spa.Web.Controllers
         [EnableQuery(PageSize = 10)]
         public IHttpActionResult Get()
         {
-            var customers = _repo.GetAll2();
-            //var customers = _repo.GetAll();
+            var customers = _repo.GetAllDto();
             if (customers == null)
             {
                 NotFound();
@@ -40,7 +39,7 @@ namespace Spa.Web.Controllers
         [EnableQuery]
         public IHttpActionResult Get([FromODataUri] int key)
         {
-            var customer = _repo.Get(c => c.Id == key);
+            var customer = _repo.Get2(key);
             if (customer == null)
             {
                 NotFound();
@@ -48,6 +47,7 @@ namespace Spa.Web.Controllers
             return Ok(customer);
         }
 
+        //TODO fix this method
         public async Task<IHttpActionResult> Post(Customer customer)
         {
             if (customer == null)
@@ -63,6 +63,7 @@ namespace Spa.Web.Controllers
             return BadRequest(ModelState);
         }
 
+        //TODO fix this method
         public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
         {
             //Check if properties name are valid
@@ -115,6 +116,7 @@ namespace Spa.Web.Controllers
             //}
         }
 
+        //TODO fix this method
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update, ODataQueryOptions<Customer> options)
         {
             if (!ModelState.IsValid)
@@ -134,7 +136,7 @@ namespace Spa.Web.Controllers
             {
                 await _repo.PutAsync(update);
             }
-                // Exception occures if entity was changed since the last loading
+            // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
             {
                 if (!_repo.EntityExists(key))
@@ -146,6 +148,7 @@ namespace Spa.Web.Controllers
             return Updated(update);
         }
 
+        //TODO fix this method
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
             var customer = await _repo.GetAsync(key);

@@ -13,9 +13,10 @@ using GenericServices.ServicesAsync;
 
 namespace Spa.Data.Infrastructure
 {
-    public class SpaRepository<TEntity, TDto> : ISpaRepository<TEntity,TDto> 
+    public class SpaRepository<TEntity, TDto, TDtoAsync> : ISpaRepository<TEntity, TDto, TDtoAsync>
         where TEntity : class, new()
         where TDto : EfGenericDto<TEntity, TDto>, new()
+        where TDtoAsync : EfGenericDtoAsync<TEntity, TDtoAsync>, new()
     {
         private readonly IGenericServicesDbContext _db;
 
@@ -24,7 +25,7 @@ namespace Spa.Data.Infrastructure
             _db = context;
         }
 
-
+        #region Old methods
         public bool EntityExists(int key)
         {
             return _db.Set<TEntity>().Find(key) != null;
@@ -69,34 +70,36 @@ namespace Spa.Data.Infrastructure
             _db.Set<TEntity>().Remove(entity);
             return await _db.SaveChangesAsync();
         }
+        #endregion
 
+        #region Service fields for property injections with <TEntity> generic
         public IListService<TEntity> ListService { get; set; }
         public IDetailServiceAsync<TEntity> DetailServiceAsync { get; set; }
         public IDetailService<TEntity> DetailService { get; set; }
         public ICreateServiceAsync<TEntity> CreateServiceAsync { get; set; }
         public IUpdateServiceAsync<TEntity> UpdateServiceAsync { get; set; }
-        public IUpdateService<TEntity> UpdateService { get; set; }
+        #endregion
 
+        #region Service fields for property injections with <TEntity, TDto> generics
+        public IListService<TEntity, TDto> ListServiceDto { get; set; }
+        public IDetailServiceAsync<TEntity, TDtoAsync> DetailServiceDtoAsync { get; set; }
+        public IDetailService<TEntity, TDto> DetailServiceDto { get; set; }
+        public ICreateServiceAsync<TEntity, TDtoAsync> CreateServiceDtoAsync { get; set; }
+        public IUpdateServiceAsync<TEntity, TDtoAsync> UpdateServiceDtosync { get; set; }
+        #endregion
 
-        //Using GenericService services
-
+        #region CRUD methods with <TEntity> generic
         public IQueryable<TEntity> GetAll2()
         {
             return ListService.GetAll();
         }
         public async Task<ISuccessOrErrors<TEntity>> GetAsync2(int key)
         {
-            var keys = new ArrayList {key};
             return await DetailServiceAsync.GetDetailAsync(key);
         }
         public ISuccessOrErrors<TEntity> Get2(int key)
         {
             return DetailService.GetDetail(key);
-        }
-
-        public Task<ISuccessOrErrors<TDto>> Get2(Expression<Func<TEntity, bool>> whereExpression)
-        {
-            return DetailServiceAsync.GetDetailUsingWhereAsync(whereExpression);
         }
 
         public async Task<ISuccessOrErrors> PostAsync2(TEntity entity)
@@ -108,52 +111,31 @@ namespace Spa.Data.Infrastructure
         {
             return await UpdateServiceAsync.UpdateAsync(entity);
         }
+        #endregion
 
+        #region CRUD methods with <TDto, TDtoAsync> generic
+        public IQueryable<TDto> GetAllDto()
+        {
+            return ListServiceDto.GetAll();
+        }
+        public async Task<ISuccessOrErrors<TDtoAsync>> GetDtoAsync(int key)
+        {
+            return await DetailServiceDtoAsync.GetDetailAsync();
+        }
+        public ISuccessOrErrors<TDto> GetDto(int key)
+        {
+            return DetailServiceDto.GetDetail(key);
+        }
 
+        public async Task<ISuccessOrErrors> PostDtoAsync(TDtoAsync dto)
+        {
+            return await CreateServiceDtoAsync.CreateAsync(dto);
+        }
+
+        public async Task<ISuccessOrErrors> PatchDtoAsync(TDtoAsync dto)
+        {
+            return await UpdateServiceDtosync.UpdateAsync(dto);
+        }
+        #endregion
     }
-
-
-
-
-    //public bool Insert(Product product)
-    //{
-    //    try
-    //    {
-    //        _db.Products.Add(product);
-    //        return true;
-    //    }
-    //    catch
-    //    {
-    //        return false;
-    //    }
-    //}
-
-    //public IQueryable<Product> GetAllProducts()
-    //{
-    //    return _db.Products.AsQueryable();
-    //}
-
-    //public IQueryable<Product> GetProductsByOrder(int orderId)
-    //{
-    //    var products = from p in _db.Products
-    //                   join oi in _db.OrderItems on p.ProductId equals oi.Product.ProductId
-    //                   join o in _db.Orders on oi.Order.OrderId equals o.OrderId
-    //                   where o.OrderId == orderId
-    //                   select p;
-    //    return products;
-    //}
-
-    //public IQueryable<dynamic> GetDetailedOrder(int orderId)
-    //{
-    //    var detailedOrder = from c in _db.Customers
-    //                        join o in _db.Orders on c.Id equals o.Customer.Id
-    //                        join oi in _db.OrderItems on o.OrderId equals oi.Order.OrderId
-    //                        join p in _db.Products on oi.Product.ProductId equals p.ProductId
-    //                        where o.OrderId == orderId
-    //                        select new
-    //                        {
-    //                            CustomerId = c.Id
-    //                        };
-    //    return detailedOrder;
-    //}
 }
