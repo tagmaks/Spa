@@ -152,6 +152,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Dtos\CustomerDto.cs" />
     <Compile Include="Dtos\CustomerDtoAsync.cs" />
+    <Compile Include="Dtos\CustomerGroupDto.cs" />
+    <Compile Include="Dtos\CustomerGroupDtoAsync.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\CustomerGroup.cs" />

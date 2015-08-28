@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Query;
 using CacheCow.Server.CacheControlPolicy;
+using Spa.Data.Dtos;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 
@@ -15,64 +16,35 @@ namespace Spa.Web.Controllers
 {
     public class CustomerGroupsController : ODataController
     {
-        private readonly ISpaRepository<CustomerGroup> _repo;
+        private readonly ISpaRepository<CustomerGroup, CustomerGroupDto, CustomerGroupDtoAsync> _repo;
 
         // GET: odata/CustomerGroups
-        public CustomerGroupsController(ISpaRepository<CustomerGroup> repo)
+        public CustomerGroupsController(ISpaRepository<CustomerGroup, CustomerGroupDto, CustomerGroupDtoAsync> repo)
         {
             _repo = repo;
         }
         [EnableQuery(PageSize = 10, AllowedQueryOptions = AllowedQueryOptions.All)]
         //[HttpCacheControlPolicy(true, 100)]
-        public IHttpActionResult GetCustomerGroups(ODataQueryOptions<CustomerGroup> options)
+        public IHttpActionResult Get()
         {
-            //// validate the query.
-            //try
-            //{
-            //    queryOptions.Validate(_validationSettings);
-            //}
-            //catch (ODataException ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
-
-            var customerGroups = _repo.GetAll();
+            var customerGroups = _repo.GetAllDto();
             if (customerGroups == null)
             {
                 NotFound();
             }
-            //if (Request.Headers.IfNoneMatch != null && options.IfNoneMatch.ApplyTo(customerGroups) == null)
-            //{
-            //    return StatusCode(HttpStatusCode.NotModified);
-            //}
-            //if (options.IfNoneMatch != null && options.IfNoneMatch.ApplyTo(customerGroups) == null)
-            //{
-            //    return StatusCode(HttpStatusCode.PreconditionFailed);
-            //}
-
             return Ok(customerGroups);
         }
 
         // GET: odata/CustomerGroups(5)
         [EnableQuery]
-        public IHttpActionResult GetCustomerGroup([FromODataUri] int key)
+        public IHttpActionResult Get([FromODataUri] int key)
         {
-            //// validate the query.
-            //try
-            //{
-            //    queryOptions.Validate(_validationSettings);
-            //}
-            //catch (ODataException ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
-
-            var customerGroup = _repo.Get(c => c.CustomerGroupId == key);
-            if (customerGroup == null)
+            var customer = _repo.Get(key);
+            if (customer == null)
             {
                 NotFound();
             }
-            return Ok(customerGroup);
+            return Ok(customer);
         }
 
         // PUT: odata/CustomerGroups(5)
@@ -94,7 +66,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var customer = await _repo.GetAsync(key);
+            var customer = await _repo.GetAsyncOld(key);
             if (customer == null)
             {
                 return NotFound();
@@ -104,7 +76,7 @@ namespace Spa.Web.Controllers
 
             try
             {
-                await _repo.PatchAsync();
+                await _repo.PatchAsyncOld();
             }
             // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)
@@ -129,7 +101,7 @@ namespace Spa.Web.Controllers
             {
                 return BadRequest();
             }
-            var postTask = _repo.PostAsync(customerGroup);
+            var postTask = _repo.PostAsyncOld(customerGroup);
             await postTask;
             if (!postTask.IsCompleted)
             {
@@ -160,7 +132,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var customerGroup = await _repo.GetAsync(key);
+            var customerGroup = await _repo.GetAsyncOld(key);
             if (customerGroup == null)
             {
                 return NotFound();
@@ -170,7 +142,7 @@ namespace Spa.Web.Controllers
 
             try
             {
-                await _repo.PatchAsync();
+                await _repo.PatchAsyncOld();
             }
                 // Exception occures if entity was changed since the last loading
             catch (DbUpdateConcurrencyException ex)

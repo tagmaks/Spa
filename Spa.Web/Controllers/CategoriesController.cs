@@ -73,7 +73,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            // TODO: Get the entity here.
+            // TODO: GetOld the entity here.
 
             // delta.Put(category);
 
@@ -108,7 +108,7 @@ namespace Spa.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            // TODO: Get the entity here.
+            // TODO: GetOld the entity here.
 
             // delta.Patch(category);
 

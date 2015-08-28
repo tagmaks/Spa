@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
+using System.Web;
+using GenericServices.Core;
+using Spa.Data.Entities;
 
-namespace Spa.Data.Entities
+namespace Spa.Data.Dtos
 {
-    public class CustomerGroup
+    public class CustomerGroupDto : EfGenericDto<CustomerGroup, CustomerGroupDto>
     {
         public int CustomerGroupId { get; set; }
         public string GroupName { get; set; }
         public int Discount { get; set; }
         public OfferList OfferList { get; set; }
         public ICollection<Customer> Customers { get; set; }
+
+        protected override CrudFunctions SupportedFunctions
+        {
+            get { return CrudFunctions.List; }
+        }
     }
 }
