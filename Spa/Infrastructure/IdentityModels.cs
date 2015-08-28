@@ -17,7 +17,7 @@ namespace Spa.Data.Infrastructure
         public CustomRole(string name) { Name = name; }
     }
 
-    public class CustomUserStore : UserStore<AppUser, CustomRole, int,
+    public class CustomUserStore : UserStore<User, CustomRole, int,
         CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public CustomUserStore(ApplicationDbContext context)

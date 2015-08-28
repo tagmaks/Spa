@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
 
 namespace Spa.Data.Infrastructure
 {
-    public class AppUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class User : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         [Required]
         [MaxLength(50)]
@@ -21,6 +22,10 @@ namespace Spa.Data.Infrastructure
         public Enums.Gender? Gender { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
-        //public ICollection<CustomUserClaim> Claims { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public bool SubscribedNews { get; set; }
+        public CustomerGroup CustomerGroup { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Ratio> Ratios { get; set; }
     }
 }

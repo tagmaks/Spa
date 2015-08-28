@@ -9,16 +9,15 @@ using Spa.Web.Infrastructure;
 
 namespace Spa.Web.Controllers
 {
-    public class CustomersController : ODataController
+    public class UsersController : ODataController
     {
-        private readonly ISpaRepository<Customer, CustomerDto, CustomerDtoAsync> _repo;
+        private readonly ISpaRepository<User, UserDto, UserDtoAsync> _repo;
 
-        public CustomersController(ISpaRepository<Customer, CustomerDto, CustomerDtoAsync> repo)
+        public UsersController(ISpaRepository<User, UserDto, UserDtoAsync> repo)
         {
             _repo = repo;
         }
 
-        //TODO fix for Dto entities
         [EnableQuery(PageSize = 10)]
         public IHttpActionResult Get()
         {
@@ -30,7 +29,6 @@ namespace Spa.Web.Controllers
             return NotFound();
         }
 
-        //TODO fix for Dto entities
         [EnableQuery]
         public IHttpActionResult Get([FromODataUri] int key)
         {
@@ -42,7 +40,7 @@ namespace Spa.Web.Controllers
             return NotFound();
         }
 
-        public async Task<IHttpActionResult> Post(Customer customer)
+        public async Task<IHttpActionResult> Post(User customer)
         {
             if (customer == null)
             {
@@ -57,7 +55,7 @@ namespace Spa.Web.Controllers
             return BadRequest(ModelState);
         }
 
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Customer> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<User> patch)
         {
             //Check if properties name are valid
             if (!ModelState.IsValid)
@@ -88,7 +86,7 @@ namespace Spa.Web.Controllers
             return BadRequest(ModelState);
         }
 
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Customer update)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, User update)
         {
             if (!ModelState.IsValid)
             {

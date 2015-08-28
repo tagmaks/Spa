@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Spa.Data.Infrastructure;
 
 namespace Spa.Data.Entities
 {
@@ -16,6 +17,6 @@ namespace Spa.Data.Entities
         public Enums.RatioGrade ProductRatio { get; set; }
         public DateTime AddDate { get; set; }
         public Product Product { get; set; }
-        public Customer Customer { get; set; }
+        public User Customer { get; set; }
     }
 }

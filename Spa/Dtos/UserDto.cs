@@ -5,22 +5,18 @@ using System.Linq;
 using System.Web;
 using GenericServices.Core;
 using Spa.Data.Entities;
+using Spa.Data.Infrastructure;
 
 namespace Spa.Data.Dtos
 {
-    public class CustomerDto: EfGenericDto<Customer, CustomerDto>
+    public class UserDto: EfGenericDto<User, UserDto>
     {
         public int AccessFailedCount { get; set; }
-        //public ICollection<TClaim> Claims { get; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public int Id { get; set; }
-        public bool LockoutEnabled { get; set; }
-        public DateTime? LockoutEndDateUtc { get; set; }
-        //public string PasswordHash { get; set; }
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
-        //public ICollection<TRole> Roles { get; }
         public string SecurityStamp { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public virtual string UserName { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Spa.Data.Infrastructure;
 
 namespace Spa.Data.Entities
 {
@@ -24,6 +25,6 @@ namespace Spa.Data.Entities
         //public ShippingMethod ShippingMethod { get; set; }
         //public PaymentMethod PaymentMethod { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
-        public Customer Customer { get; set; }
+        public User Customer { get; set; }
     }
 }

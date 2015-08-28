@@ -32,6 +32,7 @@ namespace Spa.Web.Controllers
             {
                 NotFound();
             }
+
             return Ok(customerGroups);
         }
 

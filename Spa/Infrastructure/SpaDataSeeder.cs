@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
 
 namespace Spa.Data.Infrastructure
 {
     public class SpaDataSeeder
     {
-        ApplicationDbContext _ctx;
+        private readonly ApplicationDbContext _ctx;
         public SpaDataSeeder(ApplicationDbContext ctx)
         {
             _ctx = ctx;
@@ -43,12 +44,12 @@ namespace Spa.Data.Infrastructure
 
         public string RandomString(int size)
         {
-            Random _rng = new Random((int)DateTime.Now.Ticks);
+            Random random = new Random((int)DateTime.Now.Ticks);
             string _char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             char[] buffer = new char[size];
             for (int i = 0; i < size; i++)
             {
-                buffer[i] = _char[_rng.Next(_char.Length)];
+                buffer[i] = _char[random.Next(_char.Length)];
             }
             return new string(buffer);
         }
@@ -56,9 +57,22 @@ namespace Spa.Data.Infrastructure
         {
             try
             {
+                var userManager = new UserManager<User, int>(new CustomUserStore(new ApplicationDbContext()));
+
+                var appUser = new User()
+                {
+                    FirstName = "Maksim",
+                    LastName = "Ivanov",
+                    Email = "maximustag@gmail.com",
+                    EmailConfirmed = true,
+                    UserName = "maximus",
+                    Roles = { }
+                };
+
+                userManager.Create(appUser, "Password!");
+
                 var group = new CustomerGroup()
                 {
-                    
                     GroupName = "Default",
                     Discount = 10
                 };
@@ -67,7 +81,7 @@ namespace Spa.Data.Infrastructure
                 foreach (var customerName in customerNames)
                 {
                     var nameGenderMail = SplitValue(customerName);
-                    var customer = new Customer()
+                    var user = new User()
                     {
                         FirstName = String.Format("{0}", nameGenderMail[0]),
                         LastName = String.Format("{0}", nameGenderMail[1]),
@@ -78,16 +92,15 @@ namespace Spa.Data.Infrastructure
                         Email = String.Format("{0}.{1}@{2}", nameGenderMail[0], nameGenderMail[1], nameGenderMail[3]),
                         SubscribedNews = true,
                         CustomerGroup = group,
-
                     };
-                    _ctx.Customers.Add(customer);
+                    _ctx.Users.Add(user);
                 }
                 _ctx.SaveChanges();
             }
             catch (Exception ex)
             {
                 string message = ex.ToString();
-                throw ex;
+                throw;
             }
         }
     }

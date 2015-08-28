@@ -6,6 +6,7 @@ using System.Web.OData.Extensions;
 using System.Web.OData.Builder;
 using Microsoft.OData.Edm;
 using Newtonsoft.Json.Serialization;
+using Spa.Data.Dtos;
 using Spa.Data.Entities;
 using Spa.Data.Infrastructure;
 using Spa.Web.Helpers;
@@ -43,12 +44,11 @@ namespace Spa.Web
         private static IEdmModel GenerateEdmModel()
         {
             ODataModelBuilder builder = new ODataConventionModelBuilder();
-            builder.EntitySet<AppUser>("AppUsers");
+            //builder.EntitySet<User>("AppUsers");
             builder.EntitySet<CustomUserClaim>("Claims");
 
-            var customers = builder.EntitySet<Customer>("Customers");
-            customers.EntityType.Ignore(c => c.PasswordHash);
-
+            builder.EntitySet<User>("Users");
+            builder.EntitySet<UserDto>("UsersDto");
             builder.EntitySet<CustomerGroup>("CustomerGroups");
             builder.EntitySet<OfferList>("OfferLists");
             builder.EntitySet<Offer>("Offers");

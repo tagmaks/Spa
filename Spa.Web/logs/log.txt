@@ -1878,3 +1878,29 @@ Error Number: 2812, State: 62, Class: 16
    â System.Web.Http.HttpServer.<SendAsync>d__0.MoveNext()
 ClientConnectionId:17ec208e-c12b-42eb-85ac-2ae88d57ea5f
 Error Number: 2812, State: 62, Class: 16
+2015-08-28 14:07:30,604 [7] ERROR Spa.Web.Tracing.GlobalExceptionLogger - Unhandled exception thrown in GET for request http://localhost:23026/Odata/Customers?$skip=10: System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'dbo.Server_GetCache'.
+   â System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   â System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   â System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   â System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   â System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   â System.Data.SqlClient.SqlDataReader.get_MetaData()
+   â System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   â System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   â System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   â System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   â System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   â System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   â CacheCow.Server.EntityTagStore.SqlServer.SqlServerEntityTagStore.TryGetValue(CacheKey key, TimedEntityTagHeaderValue& eTag)
+   â CacheCow.Server.CachingHandler.<>c__DisplayClass15.<AddCaching>b__13()
+   â CacheCow.Common.Helpers.BasicExtensions.<>c__DisplayClass4.<Chain>b__3()
+   â CacheCow.Server.CachingHandler.ExecuteCacheAdditionRules(CacheKey cacheKey, HttpRequestMessage request, HttpResponseMessage response)
+   â CacheCow.Server.CachingHandler.<>c__DisplayClass1c.<GetCachingContinuation>b__1b(HttpResponseMessage response)
+   â System.Threading.Tasks.TaskHelpersExtensions.<>c__DisplayClass3b`2.<Then>b__3a(Task`1 t)
+   â System.Threading.Tasks.TaskHelpersExtensions.ThenImpl[TTask,TOuterResult](TTask task, Func`2 continuation, CancellationToken cancellationToken, Boolean runSynchronously)
+--- End of stack trace from previous location where exception was thrown ---
+   â System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   â System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   â System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   â System.Web.Http.HttpServer.<SendAsync>d__0.MoveNext()
+ClientConnectionId:2d7662fe-5880-4b15-99a4-31038ec32e37

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Web;
 using GenericServices.Core;
 using Spa.Data.Entities;
+using Spa.Data.Infrastructure;
 
 namespace Spa.Data.Dtos
 {
-    public class CustomerDtoAsync : EfGenericDtoAsync<Customer, CustomerDtoAsync>
+    public class UserDtoAsync : EfGenericDtoAsync<User, UserDtoAsync>
     {
         public DateTime? DateOfBirth { get; set; }
         public bool SubscribedNews { get; set; }

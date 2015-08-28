@@ -12,7 +12,7 @@ using Spa.Data.Mappers;
 namespace Spa.Data.Infrastructure
 {
     public class ApplicationDbContext :
-        IdentityDbContext<AppUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>,
+        IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>,
         IGenericServicesDbContext
     {
         public ApplicationDbContext()
@@ -81,9 +81,8 @@ namespace Spa.Data.Infrastructure
         //        trackUpdateClass.rowguid = Guid.NewGuid();
         //}
 
-        //public DbSet<AppUser> AppUsers { get; set; }
+        //new public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerGroup> CustomerGroups { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<OfferList> OfferLists { get; set; }
@@ -101,9 +100,8 @@ namespace Spa.Data.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new AppUserMapper());
             modelBuilder.Configurations.Add(new CategoryMapper());
-            modelBuilder.Configurations.Add(new CustomerMapper());
+            modelBuilder.Configurations.Add(new UserMapper());
             modelBuilder.Configurations.Add(new CustomerGroupMapper());
             modelBuilder.Configurations.Add(new OfferMapper());
             modelBuilder.Configurations.Add(new OfferListMapper());

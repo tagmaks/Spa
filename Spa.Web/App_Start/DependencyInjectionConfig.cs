@@ -115,8 +115,8 @@ namespace Spa.Web
 
             //    });
 
-            builder.RegisterType(typeof(CustomersController))
-                .UsingConstructor(typeof(ISpaRepository<Customer, CustomerDto, CustomerDtoAsync>));
+            builder.RegisterType(typeof(UsersController))
+                .UsingConstructor(typeof(ISpaRepository<User, UserDto, UserDtoAsync>));
 
             Load(builder);
 
